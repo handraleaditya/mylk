@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "280140733098",
+    "project_id": "mylk-app",
+    "storage_bucket": "mylk-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:280140733098:android:ac2ec987e848d74bf9ced3",
+        "android_client_info": {
+          "package_name": "com.lucyd.mylk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "280140733098-s2rd4r00qpkb5sqdp6a0fvunfvra2kps.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAcQiNS_kpghy7SrHi4JwroJbxMZ_rIAk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "280140733098-s2rd4r00qpkb5sqdp6a0fvunfvra2kps.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
