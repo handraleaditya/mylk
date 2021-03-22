@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:mylk/models/models.dart';
+import 'package:mylk/models/itemModel.dart';
 // import 'package:deciml/backend/item/itemProviderModel.dart';
 // import 'package:deciml/backend/services/cloudFunction.dart';
 
@@ -12,21 +12,24 @@ class ItemController {
   String id;
   String name, description;
   num price;
+  Item item;
 
   ItemController({@required this.id});
 
-  Future<String> add(item) async {
-    item.createdAt = DateTime.now() as String;
+  Future<String> add(Item item) async {
+    // item.createdAt = DateTime.now() as String;
 
     // if (isLoggedIn()) {
     if (true) {
       await FirebaseFirestore.instance
           .collection('items')
-          .add(item)
+          .add(item.toJson())
           .catchError((e) {
         print(e);
       });
     }
+
+    // return "";
   }
 
   getProducts() async {

@@ -92,11 +92,10 @@ class _LoginState extends State<Login> {
                       children: [Text("Next"), Icon(Icons.chevron_right)],
                     ),
                     onPressed: () async {
-                      print(phoneController.text);
+                      print('+91' + phoneController.text);
+                      await verifyPhone('+91' + phoneController.text);
                       // Get.to(() => Otp());
                       Get.to(() => Home());
-
-                      // await verifyPhone('+91' + phoneController.text);
                     },
                     shape: new RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(13.0),

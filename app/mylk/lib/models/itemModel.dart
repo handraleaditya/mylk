@@ -7,14 +7,18 @@ class Item {
   String name;
   String description;
   num price;
-  // int quantity;
+  int quantity;
   // String createdAt;
   String imageUrl;
   // bool outOfStock;
   DocumentReference reference;
 
   Item(this.name,
-      {this.price, this.imageUrl, this.reference, this.description});
+      {this.price,
+      this.imageUrl,
+      this.reference,
+      this.description,
+      this.quantity});
 
   factory Item.fromJson(Map<dynamic, dynamic> json) => ItemFromJson(json);
 
@@ -24,7 +28,14 @@ class Item {
     return newItem;
   }
 
-  Map<String, dynamic> toJson() => ItemToJson(this);
+  // factory Item.fromReference(DocumentReference reference){
+  //   Item newItem = Item.fromJson
+  // }
+
+  Map<String, dynamic> toJson() {
+    return ItemToJson(this);
+  }
+
   @override
   String toString() => "Item<$name>";
 }
@@ -37,7 +48,7 @@ Item ItemFromJson(Map<dynamic, dynamic> json) {
 }
 
 Map<String, dynamic> ItemToJson(Item item) {
-  <String, dynamic>{
+  return <String, dynamic>{
     'name': item.name,
     'description': item.description,
     'price': item.price,
@@ -55,33 +66,3 @@ List<Map<String, dynamic>> _ItemList(List<Item> items) {
   });
   return itemMap;
 }
-
-// ItemModel.fromJson(Map<String, dynamic> data) {
-//   this.name = data['name'];
-//   this.price = data['price'];
-//   this.description = data['description'];
-//   this.quantity = data['quantity'];
-//   this.createdAt = data['createdAt'];
-//   this.imageUrl = data['imageUrl'];
-// }
-// ItemModel() {
-//   this.name = "";
-//   this.price = 0;
-//   this.description = "";
-//   this.quantity = 0;
-//   this.createdAt = "";
-//   this.imageUrl = "";
-// }
-
-// Map<String, dynamic> toMap() {
-//   return {
-//     'name': name,
-//     'description': description,
-//     'price': price,
-//     'quantity': quantity,
-//     'createdAt': createdAt,
-//     'imageUrl': imageUrl,
-//   };
-// }
-
-// String toJson() => json.encode(toMap());

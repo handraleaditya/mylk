@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mylk/Auth.dart';
+import 'package:mylk/home.dart';
 
 class Otp extends StatefulWidget {
   Otp({
@@ -88,11 +89,12 @@ class _OtpState extends State<Otp> {
                     onPressed: () async {
                       smsCode = smsController.text;
                       try {
+                        debugPrint('[LOG] Incorrect OTP entered' +
+                            smsCode.toString() +
+                            'f');
+
                         await AuthController().signInWithOTP(
-                            context, smsCode, widget.verificationId, () {
-                          print('sign in success');
-                          
-                        });
+                            context, smsCode, widget.verificationId, () {});
                       }
                       // If otp entered was incorrect
                       catch (e) {

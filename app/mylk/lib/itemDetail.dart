@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:get/get.dart';
+import 'package:mylk/Auth.dart';
 import 'package:mylk/cart.dart';
-import 'package:mylk/models/models.dart';
+import 'package:mylk/models/itemModel.dart';
 
 class ItemDetail extends StatefulWidget {
   // var imageUrl, price, name, description;
@@ -67,7 +68,7 @@ class _ItemDetailState extends State<ItemDetail> {
         ),
         SizedBox(height: 45.0),
         Hero(
-          tag: widget.item.imageUrl ?? "http://",
+          tag: widget.item.name.toString(),
           child: Image.network(
             widget.item.imageUrl ?? "http://",
             height: 180,
@@ -79,11 +80,11 @@ class _ItemDetailState extends State<ItemDetail> {
               if (loadingProgress == null) return child;
               return Center(
                 child: CircularProgressIndicator(
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes
-                      : null,
-                ),
+                    // value: loadingProgress.expectedTotalBytes != null
+                    //     ? loadingProgress.cumulativeBytesLoaded /
+                    //         loadingProgress.expectedTotalBytes
+                    //     : null,
+                    ),
               );
             },
           ),
@@ -155,7 +156,7 @@ class _ItemDetailState extends State<ItemDetail> {
                 ],
               ),
               onPressed: () async {
-                // addToCart(widget.item);
+                addToCart(widget.item);
                 // Get.to(() => Otp());
                 // Get.to(() => Home());
 
@@ -173,7 +174,7 @@ class _ItemDetailState extends State<ItemDetail> {
 
   Text getButtonText() {
     if (quantity == 1) {
-      return Text("Add " + " to cart");
+      return Text("Add" + " to cart");
     } else {
       return Text("Add " + (quantity.toString()) + " to cart");
     }
@@ -186,6 +187,7 @@ class _ItemDetailState extends State<ItemDetail> {
           Container(
             height: 40,
             child: FloatingActionButton(
+              heroTag: "decreaseQuantity",
               child: Icon(Icons.remove, color: Colors.black87),
               backgroundColor: Colors.white,
               onPressed: () {
@@ -203,6 +205,7 @@ class _ItemDetailState extends State<ItemDetail> {
           Container(
             height: 40,
             child: FloatingActionButton(
+              heroTag: "increaseQuantity",
               child: Icon(Icons.add, color: Colors.black87),
               backgroundColor: Colors.white,
               onPressed: () {
@@ -235,9 +238,10 @@ class _ItemDetailState extends State<ItemDetail> {
 
   void addToCart(Item item) {
     cart.addToCart(
-        productId: item.reference, unitPrice: item.price, quantity: 1);
+        productId: item.reference.id,
+        unitPrice: item.price,
+        quantity: quantity);
 
-    print('--043-69-0560-456-----------CART HAS' +
-        cart.cartItem.first.productId.toString());
+    Get.to(() => Cart());
   }
 }

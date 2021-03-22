@@ -11,23 +11,17 @@ import 'package:mylk/models/userModel.dart' as appUser;
 import 'package:mylk/models/userController.dart';
 import 'package:provider/provider.dart';
 
-class Cart extends StatefulWidget {
-  Cart();
+class MyOrders extends StatefulWidget {
+  MyOrders();
 
   @override
-  _CartState createState() => _CartState();
+  _MyOrdersState createState() => _MyOrdersState();
 }
 
-class _CartState extends State<Cart> {
-  Item item;
-  AuthController auth = AuthController();
-  FlutterCart cart = FlutterCart();
-  var cartItems;
-
+class _MyOrdersState extends State<MyOrders> {
   @override
   void initState() {
     super.initState();
-    cartItems = cart.cartItem;
   }
 
   @override
@@ -47,15 +41,10 @@ class _CartState extends State<Cart> {
           actions: [
             IconButton(
               icon: Icon(Icons.remove_shopping_cart, color: Color(0xFF545D68)),
-              onPressed: () {
-                cart.deleteAllCart();
-                setState(() {
-                  cartItems = cart.cartItem;
-                });
-              },
+              onPressed: () {},
             )
           ],
-          title: Text('My Cart',
+          title: Text('My Orders',
               style: TextStyle(
                   fontFamily: 'Varela',
                   fontSize: 20.0,
@@ -63,64 +52,42 @@ class _CartState extends State<Cart> {
         ),
         body: Container(
           child: FutureBuilder(
-              future: getCartItems(),
+              future: getOrders(),
               builder: (_, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
                 } else {
-                  if (cart.cartItem.length == 0) {
-                    return Center(
-                        child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                            height: 100,
-                            child: Image(
-                                image: AssetImage(
-                              'assets/images/cart.png',
-                            ))),
-                        Text("Cart is empty"),
-                      ],
-                    ));
+                  if (!snapshot.hasData) {
+                    print('yay');
                   }
+                  // if (cart.cartItem.length == 0) {
+                  //   return Center(
+                  //       child: Column(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       Container(
+                  //           height: 100,
+                  //           child: Image(
+                  //               image: AssetImage(
+                  //             'assets/images/cart.png',
+                  //           ))),
+                  //       Text("No Orders Yet :("),
+                  //     ],
+                  //   ));
+                  // }
                   return Column(
                     children: [
                       ListView.builder(
                           shrinkWrap: true,
                           padding:
                               EdgeInsets.only(left: 10, right: 10, top: 50),
-                          itemCount: snapshot.data.length,
+                          itemCount: 1,
                           itemBuilder: (_, index) {
-                            return cartItem(item = snapshot.data[index]);
+                            Text(
+                              "fddfdf",
+                              style: TextStyle(color: Colors.red),
+                            );
                           }),
-                      Container(
-                        child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 15, top: 15),
-                            child: Text(
-                                "Total \₹" +
-                                    cart.getTotalAmount().toInt().toString(),
-                                style: TextStyle(fontSize: 18)),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: FlatButton(
-                          onPressed: () {
-                            cart.deleteAllCart();
-
-                            setState(() {
-                              cartItems = cart.cartItem;
-                            });
-                          },
-                          child: Text("CLEAR CART",
-                              style: TextStyle(color: Colors.red)),
-                        ),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(left: 15, right: 15),
-                          child: ProceedButton()),
                     ],
                   );
                 }
@@ -210,14 +177,7 @@ class _CartState extends State<Cart> {
                           //   color: Colors.red,
                           // )
                           child: GestureDetector(
-                            onTap: () {
-                              int index =
-                                  cart.findItemIndexFromCart(item.reference.id);
-                              cart.deleteItemFromCart(index);
-                              setState(() {
-                                cartItems = cart.cartItem;
-                              });
-                            },
+                            onTap: () {},
                             child: Text(
                               "Remove",
                               style: TextStyle(fontSize: 10, color: Colors.red),
@@ -251,7 +211,7 @@ class _CartState extends State<Cart> {
         ],
       ),
       onPressed: () async {
-        placeOrder();
+        // placeOrder();
       },
       shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(25.0),
@@ -259,97 +219,47 @@ class _CartState extends State<Cart> {
     );
   }
 
-  void placeOrder() async {
-    List<Item> items = await getCartItems();
-    User user = await FirebaseAuth.instance.currentUser;
+  // void placeOrder() async {
+  //   List<Item> items = await getCartItems();
+  //   User user = await FirebaseAuth.instance.currentUser;
 
-    Order order = Order(items, cart.getTotalAmount(), "placed", item.reference);
-    print(order);
-    OrderController orderController = OrderController();
-    orderController.add(order);
+  //   Order order = Order(items, cart.getTotalAmount(), "placed", item.reference);
+  //   print(order);
+  //   OrderController orderController = OrderController();
+  //   orderController.add(order);
 
-    for (item in items) {
-      // print(item);
-      // itemController.add(item);
-    }
+  //   for (item in items) {
+  //     // print(item);
+  //     // itemController.add(item);
+  //   }
 
-    print(items.first.imageUrl);
-  }
+  //   print(items.first.imageUrl);
+  // }
 
-  Future getCartItems() async {
-    debugPrint('In!!! ');
-
-    FlutterCart cart = FlutterCart();
+  Future getOrders() async {
     List<Item> items = List<Item>();
-    DocumentSnapshot snapshot;
-    for (var item in cartItems) {
-      snapshot = await FirebaseFirestore.instance
-          .collection('items')
-          .doc(item.productId)
-          .get();
+    Item item = Item('hi');
+    items.add(item);
 
-      Item newItem = Item.fromSnapshot(snapshot);
-      newItem.quantity = item.quantity;
-      items.add(newItem);
+    OrderController orderController = OrderController();
+    List<Order> orders = orderController.getOrders();
+    print('EMPTYx+' + orders.toString());
+    return orders;
 
-      print('DATA!!! ' + newItem.name);
-    }
+    // for (var item in cartItems) {
+    //   snapshot = await FirebaseFirestore.instance
+    //       .collection('items')
+    //       .doc(item.productId)
+    //       .get();
+
+    //   Item newItem = Item.fromSnapshot(snapshot);
+    //   newItem.quantity = item.quantity;
+    //   items.add(newItem);
+
+    //   print('DATA!!! ' + newItem.name);
+    // }
     // Item x = Item.fromJson(snapshot.data[]);
     // }
     return items;
-  }
-
-  Future<List<Widget>> buildCart() async {
-    FlutterCart cart = FlutterCart();
-    List cartPage = List<Widget>();
-
-    // cart.deleteAllCart();
-    for (var item in cartItems) {
-      Item newItem = await getItemFromReference(item.productId);
-      cartPage.add(cartItem(newItem));
-      // cart.deleteAllCart();
-      print('------ID WAS---' + item.productId);
-    }
-    cartPage.add(SizedBox(height: 20));
-    cartPage.add(Container(
-      width: 50,
-      child: FlatButton(
-        onPressed: () {
-          cart.deleteAllCart();
-
-          setState(() {
-            cartItems = cart.cartItem;
-          });
-        },
-        child: Text("CLEAR CART", style: TextStyle(color: Colors.red)),
-      ),
-    ));
-    cartPage.add(SizedBox(height: 10));
-
-    cartPage.add(ProceedButton());
-
-    return cartPage;
-  }
-
-  Item getItemFromReference(String id) {
-    print('------------RECVD' + id);
-
-    var document = getItemFromDB(id);
-    // Item item = Item.fromJson(document.dat;
-    print(document.name);
-
-    return item;
-    // print(document.data());
-
-    // document.get() => then((document){
-
-    // });
-  }
-
-  getItemFromDB(String id) async {
-    DocumentSnapshot document =
-        await FirebaseFirestore.instance.collection('items').doc(id).get();
-    Item x = Item.fromJson(document.data());
-    return x;
   }
 }

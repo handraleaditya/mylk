@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:mylk/models/models.dart';
+import 'package:mylk/models/itemModel.dart';
 
 class DataRepository {
   // 1

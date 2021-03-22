@@ -1,8 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:mylk/Auth.dart';
+import 'package:mylk/models/userModel.dart' as appUser;
+import 'package:mylk/myOrders.dart';
+
 import 'package:mylk/storePage.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -21,8 +27,20 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     tabController = TabController(length: 3, vsync: this);
   }
 
+  appUser.User userData;
+
   @override
   Widget build(BuildContext context) {
+    // userData = Provider.of<appUser.User>(context);
+
+    FirebaseAuth.instance.authStateChanges().listen((User user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in!' + userData.uid);
+      }
+    });
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -32,7 +50,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           actions: [
             IconButton(
               icon: Icon(Icons.list, color: Colors.grey[800]),
-              onPressed: () {},
+              onPressed: () {
+                Get.to(() => MyOrders());
+              },
             ),
             IconButton(
               icon: Icon(Icons.shopping_cart, color: Colors.grey[800]),
@@ -92,6 +112,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: "FAB",
         onPressed: () {},
         backgroundColor: Colors.black,
         child: Icon(Icons.shopping_cart),

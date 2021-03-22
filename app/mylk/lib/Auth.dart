@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'package:mylk/home.dart';
+import 'package:mylk/models/userModel.dart' as appUser;
 
 class AuthController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -8,6 +11,8 @@ class AuthController {
   Stream<User> get user {
     return _auth.authStateChanges();
   }
+
+  Stream<User> get authState => _auth.idTokenChanges();
 
   Future<dynamic> signOut() async {
     try {
@@ -36,6 +41,8 @@ class AuthController {
       BuildContext context, AuthCredential authCreds, Function error) async {
     try {
       await FirebaseAuth.instance.signInWithCredential(authCreds);
+
+      Get.to(() => Home());
     } catch (e) {
       debugPrint('Error');
       error.call();
