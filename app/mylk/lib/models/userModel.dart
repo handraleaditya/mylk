@@ -1,23 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
-  String name;
-  String address1, address2;
-  String mobile;
+  String name = "";
+  String address1, address2 = "";
+  String mobile = "";
   DocumentReference reference;
   String uid;
   DateTime createdAt;
-  DateTime updatedAt;
+  DateTime updatedAt = DateTime.now().toString() as DateTime;
 
   User({
-    this.uid,
-    this.address1,
-    this.address2,
-    this.createdAt,
-    this.mobile,
-    this.name,
-    this.reference,
     this.updatedAt,
+    this.address1 = "",
+    this.address2 = "",
+    this.mobile = "",
+    this.name = "",
   });
 
   factory User.fromJson(Map<dynamic, dynamic> json) => UserFromJson(json);
@@ -33,8 +30,6 @@ User UserFromJson(Map<dynamic, dynamic> json) {
     mobile: json['mobile'] == null ? null : json['mobile'],
     address1: json['address1'] == null ? null : json['address1'],
     address2: json['address2'] == null ? null : json['address2'],
-    uid: json['uid'] == null ? null : json['uid'],
-    createdAt: json['createdAt'] == null ? null : json['createdAt'],
     updatedAt: json['updatedAt'] == null ? null : json['updatedAt'],
   );
 }

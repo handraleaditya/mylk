@@ -13,8 +13,9 @@ class OrderController {
   String name, description;
   num price;
   Order order;
+  final String uid;
 
-  OrderController();
+  OrderController({@required this.uid});
 
   Future<String> add(Order order) async {
     // order.createdAt = DateTime.now() as String;
@@ -41,9 +42,8 @@ class OrderController {
     QuerySnapshot querySnapshot =
         await FirebaseFirestore.instance.collection("orders").get();
 
-
-    return querySnapshot;
-    return FirebaseFirestore.instance.collection('orders').snapshots().map(Order.fromSnapshot(snapshot));
+    // return querySnapshot;
+    return querySnapshot.docs.map((doc) => doc.data()).toList();
   }
 
   // Future<dynamic> update(orderModel order, String id) async {

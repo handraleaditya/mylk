@@ -44,6 +44,7 @@ Item ItemFromJson(Map<dynamic, dynamic> json) {
   return Item(json['name'] as String,
       price: json['price'] == null ? null : json['price'],
       imageUrl: json['imageUrl'] == null ? null : json['imageUrl'],
+      quantity: json['quantity'] == null ? null : json['quantity'],
       description: json['description'] == null ? null : json['description']);
 }
 
@@ -52,7 +53,8 @@ Map<String, dynamic> ItemToJson(Item item) {
     'name': item.name,
     'description': item.description,
     'price': item.price,
-    'imageUrl': item.imageUrl
+    'imageUrl': item.imageUrl,
+    'quantity': item.quantity
   };
 }
 

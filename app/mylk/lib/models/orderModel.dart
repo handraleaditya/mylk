@@ -10,16 +10,16 @@ class Order {
   num total;
   String createdAt = DateTime.now().toString();
   String status;
+  String uid;
+  String name = "";
+  String address = "";
+  String address2 = "";
+  String note = "";
 
   DocumentReference reference;
 
-  Order(
-    this.items,
-    this.total,
-    // this.createdAt,
-    this.status,
-    this.reference,
-  );
+  Order(this.items, this.total, this.status, this.reference, this.uid,
+      {this.name = "", this.address = "", this.address2 = "", this.note = ""});
 
   factory Order.fromJson(Map<dynamic, dynamic> json) => orderFromJson(json);
 
@@ -28,10 +28,6 @@ class Order {
     neworder.reference = snapshot.reference;
     return neworder;
   }
-
-  // factory order.fromReference(DocumentReference reference){
-  //   order neworder = order.fromJson
-  // }
 
   Map<String, dynamic> toJson() {
     return orderToJson(this);
@@ -49,6 +45,11 @@ class Order {
       'createdAt': createdAt,
       'status': status,
       'reference': reference,
+      'uid': uid,
+      'name': name,
+      'address': address,
+      'address2': address2,
+      'note': note,
     };
   }
 
@@ -58,7 +59,11 @@ class Order {
       map['total'],
       map['createdAt'],
       map['status'],
-      // (map['reference']),
+      map['uid'],
+      name: map['name'],
+      address: map['address'],
+      address2: map['address2'],
+      note: map['note'],
     );
   }
 
@@ -72,7 +77,13 @@ class Order {
         other.total == total &&
         other.createdAt == createdAt &&
         other.status == status &&
-        other.reference == reference;
+        other.reference == reference &&
+        other.uid == uid &&
+        other.name == name &&
+        other.address == address &&
+        other.address2 == address2 &&
+        other.note == note &&
+        other.createdAt == createdAt;
   }
 
   @override
@@ -91,12 +102,12 @@ Order orderFromJson(Map<dynamic, dynamic> json) {
     json['total'] == null ? null : json['total'],
     json['createdAt'] == null ? null : json['createdAt'],
     json['status'] == null ? null : json['status'],
-    // json['reference'] == null ? null : json['reference'],
+    json['uid'] == null ? null : json['uid'],
+    name: json['name'] == null ? null : json['name'],
+    address: json['address'] == null ? null : json['address'],
+    address2: json['address2'] == null ? null : json['address2'],
+    note: json['note'] == null ? null : json['note'],
   );
-
-  // total: json['price'] == null ? null : json['price'],
-  // imageUrl: json['imageUrl'] == null ? null : json['imageUrl'],
-  // description: json['description'] == null ? null : json['description']);
 }
 
 Map<String, dynamic> orderToJson(Order order) {
@@ -109,7 +120,12 @@ Map<String, dynamic> orderToJson(Order order) {
     'total': order.total,
     'items': itemsMap,
     'status': order.status,
-    'createdAt': order.createdAt
+    'createdAt': order.createdAt,
+    'uid': order.uid,
+    'name': order.name,
+    'address': order.address,
+    'address2': order.address2,
+    'note': order.note,
   };
 }
 

@@ -17,6 +17,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   User user;
   String verificationId, error;
+  bool codeSent = false;
+
   TextEditingController phoneController = new TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -35,7 +37,7 @@ class _LoginState extends State<Login> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(left: 0),
-                  child: Text("Welcome to mylk",
+                  child: Text("Welcome to Rajveer Dairy",
                       style: TextStyle(
                           color: Colors.grey[900],
                           fontWeight: FontWeight.w900,
@@ -56,9 +58,12 @@ class _LoginState extends State<Login> {
                   height: 15,
                 ),
                 TextFormField(
+                  style: TextStyle(letterSpacing: 2),
                   autofocus: true,
+                  // maxLength: 10,
                   inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    LengthLimitingTextInputFormatter(10),
                   ],
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
@@ -92,10 +97,13 @@ class _LoginState extends State<Login> {
                       children: [Text("Next"), Icon(Icons.chevron_right)],
                     ),
                     onPressed: () async {
-                      print('+91' + phoneController.text);
+                      print('+91' +
+                          phoneController.text +
+                          'verIDs' +
+                          verificationId.toString());
                       await verifyPhone('+91' + phoneController.text);
                       // Get.to(() => Otp());
-                      Get.to(() => Home());
+                      // Get.to(() => Home());
                     },
                     shape: new RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(13.0),

@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
+import 'package:get/get.dart';
 import 'package:mylk/Auth.dart';
+import 'package:mylk/enterDetails.dart';
+import 'package:mylk/home.dart';
 import 'package:mylk/models/itemController.dart';
 import 'package:mylk/models/itemModel.dart';
 import 'package:mylk/models/orderController.dart';
@@ -66,7 +69,7 @@ class _CartState extends State<Cart> {
               future: getCartItems(),
               builder: (_, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return Container();
                 } else {
                   if (cart.cartItem.length == 0) {
                     return Center(
@@ -97,11 +100,25 @@ class _CartState extends State<Cart> {
                         child: Align(
                           alignment: Alignment.bottomRight,
                           child: Padding(
-                            padding: const EdgeInsets.only(right: 15, top: 15),
-                            child: Text(
-                                "Total \₹" +
-                                    cart.getTotalAmount().toInt().toString(),
-                                style: TextStyle(fontSize: 18)),
+                            padding: const EdgeInsets.only(right: 20, top: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text("Total  ",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold)),
+                                Text(
+                                    "\₹" +
+                                        cart
+                                            .getTotalAmount()
+                                            .toInt()
+                                            .toString(),
+                                    style: TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -121,6 +138,15 @@ class _CartState extends State<Cart> {
                       Container(
                           padding: EdgeInsets.only(left: 15, right: 15),
                           child: ProceedButton()),
+                      Container(
+                        padding: EdgeInsets.only(top: 0),
+                        child: FlatButton(
+                          onPressed: () {
+                            Get.to(() => Home());
+                          },
+                          child: Text("Browse more", style: TextStyle()),
+                        ),
+                      ),
                     ],
                   );
                 }
@@ -251,7 +277,16 @@ class _CartState extends State<Cart> {
         ],
       ),
       onPressed: () async {
-        placeOrder();
+        // placeOrder();
+        User user = await FirebaseAuth.instance.currentUser;
+        Order order = Order(
+          await getCartItems(),
+          cart.getTotalAmount(),
+          "placed",
+          item.reference,
+          user.uid,
+        );
+        Get.to(() => EnterDetails(order: order));
       },
       shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(25.0),
@@ -259,26 +294,7 @@ class _CartState extends State<Cart> {
     );
   }
 
-  void placeOrder() async {
-    List<Item> items = await getCartItems();
-    User user = await FirebaseAuth.instance.currentUser;
-
-    Order order = Order(items, cart.getTotalAmount(), "placed", item.reference);
-    print(order);
-    OrderController orderController = OrderController();
-    orderController.add(order);
-
-    for (item in items) {
-      // print(item);
-      // itemController.add(item);
-    }
-
-    print(items.first.imageUrl);
-  }
-
   Future getCartItems() async {
-    debugPrint('In!!! ');
-
     FlutterCart cart = FlutterCart();
     List<Item> items = List<Item>();
     DocumentSnapshot snapshot;
@@ -291,8 +307,6 @@ class _CartState extends State<Cart> {
       Item newItem = Item.fromSnapshot(snapshot);
       newItem.quantity = item.quantity;
       items.add(newItem);
-
-      print('DATA!!! ' + newItem.name);
     }
     // Item x = Item.fromJson(snapshot.data[]);
     // }
@@ -332,18 +346,8 @@ class _CartState extends State<Cart> {
   }
 
   Item getItemFromReference(String id) {
-    print('------------RECVD' + id);
-
     var document = getItemFromDB(id);
-    // Item item = Item.fromJson(document.dat;
-    print(document.name);
-
-    return item;
-    // print(document.data());
-
-    // document.get() => then((document){
-
-    // });
+    return document;
   }
 
   getItemFromDB(String id) async {

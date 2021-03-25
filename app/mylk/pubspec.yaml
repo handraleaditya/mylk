@@ -30,6 +30,8 @@ dependencies:
   # cached_network_image: ^2.5.1
   flutter_cart: ^0.0.5+1
   provider: ^5.0.0
+  flutter_icons:
+  expandable: ^5.0.1
   get:
 
 

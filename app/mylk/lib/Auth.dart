@@ -26,11 +26,11 @@ class AuthController {
   Future<dynamic> signInWithOTP(
       BuildContext context, String smsCode, String verId, Function error) {
     try {
-      print("signed in");
       final AuthCredential authCreds =
           PhoneAuthProvider.credential(verificationId: verId, smsCode: smsCode);
       return signIn(context, authCreds, error);
     } catch (e) {
+      print("sign in failed " + e.toString());
       error.call();
       debugPrint(e.toString());
       return null;

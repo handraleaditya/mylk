@@ -32,9 +32,11 @@ class ItemController {
     // return "";
   }
 
-  getProducts() async {
-    QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection("items").get();
+  getProducts(String category) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection("items")
+        .where('category', isEqualTo: category)
+        .get();
 
     // FirebaseFirestore.instance.collection('items').snapshots().map();
   }

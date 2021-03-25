@@ -9,7 +9,9 @@ import 'package:mylk/models/itemModel.dart';
 import 'package:mylk/itemDetail.dart';
 
 class StorePage extends StatefulWidget {
-  // const StorePage({Key key}) : super(key: key);
+  final String category;
+
+  StorePage({Key key, this.category}) : super(key: key);
 
   @override
   _StorePageState createState() => _StorePageState();
@@ -20,9 +22,9 @@ class _StorePageState extends State<StorePage> {
   bool isLoading = true;
 
   getProducts() {
+    print("getting categories");
     ItemController x = new ItemController(id: "hi");
-    x.getProducts();
-    print('--------------done');
+    x.getProducts(widget.category);
   }
 
   @override
@@ -50,7 +52,7 @@ class _StorePageState extends State<StorePage> {
 
   Widget data() {
     return StreamBuilder<QuerySnapshot>(
-        stream: repo.getStream(),
+        stream: repo.getStream(widget.category),
         builder: (context, snapshot) {
           // Item item = Item.fromSnapshot(snapshot.data);
           // dynamic d = snapshot.data

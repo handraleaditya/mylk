@@ -7,8 +7,11 @@ class DataRepository {
   final CollectionReference collection =
       FirebaseFirestore.instance.collection('items');
   // 2
-  Stream<QuerySnapshot> getStream() {
-    return collection.snapshots();
+  Stream<QuerySnapshot> getStream(String category) {
+    if (category == 'all') {
+      return collection.snapshots();
+    } else
+      return collection.where('category', isEqualTo: category).snapshots();
   }
 
   // 3

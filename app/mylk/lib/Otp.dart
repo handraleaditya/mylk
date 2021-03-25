@@ -1,15 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mylk/Auth.dart';
 import 'package:mylk/home.dart';
 
 class Otp extends StatefulWidget {
+  final String verificationId;
   Otp({
     Key key,
     this.verificationId,
   }) : super(key: key);
-  final String verificationId;
   @override
   _OtpState createState() => _OtpState();
 }
@@ -18,8 +19,8 @@ class _OtpState extends State<Otp> {
   TextEditingController smsController = new TextEditingController();
   TextEditingController yesController = new TextEditingController();
 
-  String smsCode, verificationId;
-  FirebaseAuth auth = FirebaseAuth.instance;
+  String smsCode;
+  // FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +57,10 @@ class _OtpState extends State<Otp> {
                   height: 15,
                 ),
                 TextFormField(
+                  style: TextStyle(letterSpacing: 10),
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(6),
+                  ],
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -89,7 +94,7 @@ class _OtpState extends State<Otp> {
                     onPressed: () async {
                       smsCode = smsController.text;
                       try {
-                        debugPrint('[LOG] Incorrect OTP entered' +
+                        debugPrint(widget.verificationId.toString() +
                             smsCode.toString() +
                             'f');
 
@@ -98,8 +103,7 @@ class _OtpState extends State<Otp> {
                       }
                       // If otp entered was incorrect
                       catch (e) {
-                        debugPrint(
-                            '[LOG] Incorrect OTP entered' + e.toString());
+                        debugPrint('[LOG] Failed :' + e.toString());
                       }
                     },
                     shape: new RoundedRectangleBorder(
