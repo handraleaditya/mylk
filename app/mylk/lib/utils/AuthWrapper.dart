@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mylk/Login.dart';
 import 'package:mylk/home.dart';
+import 'package:mylk/main.dart';
 import 'package:provider/provider.dart';
 
 class Wrapper extends StatelessWidget {
@@ -19,6 +20,6 @@ class Wrapper extends StatelessWidget {
       return Login();
     } else if (user != null) {
     } else
-      return Home();
+      return MyApp();
   }
 }

@@ -7,6 +7,10 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:mylk/models/orderController.dart';
 import 'package:mylk/models/orderModel.dart';
 import 'package:mylk/models/userController.dart';
+import 'package:mylk/myOrders.dart';
+import "package:firebase_messaging/firebase_messaging.dart";
+import 'package:mylk/paymentMethod.dart';
+// import 'package:dio/dio.dart';
 
 class EnterDetails extends StatefulWidget {
   Order order;
@@ -58,7 +62,7 @@ class _EnterDetailsState extends State<EnterDetails> {
               onPressed: () {},
             )
           ],
-          title: Text('Enter your details',
+          title: Text('Enter your details (1/2)',
               style: TextStyle(
                   fontFamily: 'Varela',
                   fontSize: 20.0,
@@ -198,14 +202,16 @@ class _EnterDetailsState extends State<EnterDetails> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("Confirm Order"),
-          Icon(Icons.check_circle, color: Colors.green),
+          Text("Proceed to payment"),
+          Icon(Icons.chevron_right),
         ],
       ),
       onPressed: () async {
         if (_formKey.currentState.validate()) {
           updateAddress();
-          placeOrder(widget.order);
+          // placeOrder(widget.order);
+          Order finalOrder = await buildOrder(widget.order);
+          Get.to(() => PaymentMethod(order: finalOrder));
         }
       },
       shape: new RoundedRectangleBorder(
@@ -237,19 +243,77 @@ class _EnterDetailsState extends State<EnterDetails> {
     userController.addUserData(data: data);
   }
 
-  void placeOrder(Order order) async {
+  Future<Order> buildOrder(Order order) async {
     order.address = addressController.text;
     order.address2 = address2Controller.text;
     order.name = nameController.text;
+    order.phone = await getPhone();
 
-    OrderController orderController = OrderController(uid: user.uid);
-    orderController.add(order);
+    return order;
 
-    // for (item in items) {
-    //   // print(item);
-    //   // itemController.add(item);
-    // }
+    // sendNotification(order);
+  }
 
-    // print(items.first.imageUrl);
+//   static Future<void> sendNotification(Order order) async {
+//     FirebaseMessaging messaging = FirebaseMessaging.instance;
+//     String key =
+//         "	AAAAQTmwWqo:APA91bGCnybc4-bPYYz3TGd53LjdkyGX4hAYmCC4T9mfF-VwA9fwjILAbKrHRhkiIhskUEVl2rPOcftvISPRP3rnmZ5uArKpV--U4XM-S7g_nwGcYI_ciEE2cdZ-n3RDBxAO9Q01sMCz";
+//     var postUrl = "fcm.googleapis.com/fcm/send";
+
+//     var doc = await FirebaseFirestore.instance
+//         .collection('global')
+//         .doc('admin')
+//         .get();
+//     var token = doc['fcm'];
+//     print('token : $token');
+
+//     final data = {
+//       "notification": {
+//         "body": "Accept Ride Request",
+//         "title": "This is Ride Request"
+//       },
+//       "priority": "high",
+//       "data": {
+//         "click_action": "FLUTTER_NOTIFICATION_CLICK",
+//         "id": "1",
+//         "status": "done"
+//       },
+//       "to": "$token"
+//     };
+
+//     final headers = {
+//       'content-type': 'application/json',
+//       'Authorization':
+//           'key=<Your firebase Messaging Api Key Get it from firebase project settings under cloud messaging section>'
+//     };
+//     print('token waiting : $token');
+
+//     BaseOptions options = new BaseOptions(
+//       connectTimeout: 5000,
+//       receiveTimeout: 3000,
+//       headers: headers,
+//     );
+
+//     print('Request Sent To Driver');
+
+//     // try {
+//     //   final response = await Dio(options).post(postUrl, data: data);
+
+//     //   if (response.statusCode == 200) {
+//     //     print('Request Sent To Driver');
+//     //   } else {
+//     //     print('notification sending failed');
+//     //     // on failure do sth
+//     //   }
+//     // } catch (e) {
+//     //   print('exception hep $e');
+//     // }
+//   }
+// }
+
+  Future<String> getPhone() async {
+    User currentUser = await FirebaseAuth.instance.currentUser;
+    print('Phone number was ' + currentUser.phoneNumber.toString());
+    return currentUser.phoneNumber;
   }
 }

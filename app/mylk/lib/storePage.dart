@@ -29,25 +29,21 @@ class _StorePageState extends State<StorePage> {
 
   @override
   Widget build(BuildContext context) {
-    // return data();
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: ListView(
-        // shrinkWrap: true,
-        children: <Widget>[
-          // SizedBox(height: 95.0),
-          // if (isLoading) LinearProgressIndicator(),
-          SizedBox(height: 15.0),
-
-          Container(
-              padding: EdgeInsets.only(right: 15.0, left: 15),
-              width: MediaQuery.of(context).size.width - 30.0,
-              height: MediaQuery.of(context).size.height,
-              child: data()),
-          SizedBox(height: 10)
-        ],
-      ),
-    );
+    return Scaffold(backgroundColor: Colors.white, body: data()
+        // body: ListView(
+        // children: <Widget>[
+        //   data(),
+        //   SizedBox(height: 20),
+        //   Row(
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //     children: [
+        //       Text('Made with <3 from Amravati',
+        //           style: TextStyle(color: Colors.grey[300])),
+        //     ],
+        //   ),
+        //   SizedBox(height: 120),
+        // ],
+        );
   }
 
   Widget data() {
@@ -65,15 +61,16 @@ class _StorePageState extends State<StorePage> {
 
   Widget buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
     // return Text('hi');
-    return Container(
-        child: GridView.count(
+    return GridView.count(
+      padding: EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 20),
+      shrinkWrap: true,
       crossAxisCount: 2,
       primary: false,
       crossAxisSpacing: 10.0,
       mainAxisSpacing: 15.0,
-      childAspectRatio: 0.8,
+      childAspectRatio: 0.83,
       children: snapshot.map((data) => buildListItem(context, data)).toList(),
-    ));
+    );
   }
 
   Widget buildListItem(BuildContext context, DocumentSnapshot snapshot) {
@@ -88,8 +85,7 @@ class _StorePageState extends State<StorePage> {
   Widget _buildCard(Item item, bool added, bool isFavorite, context) {
     return Container(
       child: Padding(
-          padding:
-              EdgeInsets.only(top: 5.0, bottom: 0.0, left: 5.0, right: 5.0),
+          padding: EdgeInsets.only(top: 5.0, bottom: 10, left: 5.0, right: 5.0),
           child: InkWell(
               onTap: () {
                 Get.to(() => ItemDetail(
@@ -124,7 +120,7 @@ class _StorePageState extends State<StorePage> {
                         width: 80.0,
                         child: Image.network(
                           item.imageUrl ?? "assets/images/white.jpg",
-                          fit: BoxFit.fill,
+                          fit: BoxFit.contain,
                           loadingBuilder: (BuildContext context, Widget child,
                               ImageChunkEvent loadingProgress) {
                             if (loadingProgress == null) return child;
@@ -171,7 +167,7 @@ class _StorePageState extends State<StorePage> {
                                 // Icon(Icons.shopping_basket,
                                 //     color: Color(0xFFD17E50), size: 12.0),
                                 Padding(
-                                  padding: EdgeInsets.only(top: 7, bottom: 0),
+                                  padding: EdgeInsets.only(top: 10, bottom: 0),
                                   child: Text('View',
                                       style: TextStyle(
                                           fontFamily: 'Varela',

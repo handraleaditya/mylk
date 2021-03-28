@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:mylk/models/itemModel.dart';
 
@@ -15,11 +17,16 @@ class Order {
   String address = "";
   String address2 = "";
   String note = "";
+  String phone = "";
 
   DocumentReference reference;
 
   Order(this.items, this.total, this.status, this.reference, this.uid,
-      {this.name = "", this.address = "", this.address2 = "", this.note = ""});
+      {this.name = "",
+      this.address = "",
+      this.address2 = "",
+      this.note = "",
+      this.phone = ""});
 
   factory Order.fromJson(Map<dynamic, dynamic> json) => orderFromJson(json);
 
@@ -50,21 +57,18 @@ class Order {
       'address': address,
       'address2': address2,
       'note': note,
+      'phone': phone
     };
   }
 
   factory Order.fromMap(Map<String, dynamic> map) {
-    return Order(
-      List<Item>.from(map['items']?.map((x) => Item.fromJson(x))),
-      map['total'],
-      map['createdAt'],
-      map['status'],
-      map['uid'],
-      name: map['name'],
-      address: map['address'],
-      address2: map['address2'],
-      note: map['note'],
-    );
+    return Order(List<Item>.from(map['items']?.map((x) => Item.fromJson(x))),
+        map['total'], map['createdAt'], map['status'], map['uid'],
+        name: map['name'],
+        address: map['address'],
+        address2: map['address2'],
+        note: map['note'],
+        phone: map['phone']);
   }
 
   @override
@@ -83,6 +87,7 @@ class Order {
         other.address == address &&
         other.address2 == address2 &&
         other.note == note &&
+        other.phone == phone &&
         other.createdAt == createdAt;
   }
 
@@ -107,6 +112,7 @@ Order orderFromJson(Map<dynamic, dynamic> json) {
     address: json['address'] == null ? null : json['address'],
     address2: json['address2'] == null ? null : json['address2'],
     note: json['note'] == null ? null : json['note'],
+    phone: json['phone'] == null ? null : json['phone'],
   );
 }
 
@@ -126,6 +132,7 @@ Map<String, dynamic> orderToJson(Order order) {
     'address': order.address,
     'address2': order.address2,
     'note': order.note,
+    'phone': order.phone
   };
 }
 

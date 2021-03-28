@@ -33,7 +33,12 @@ dependencies:
   flutter_icons:
   expandable: ^5.0.1
   get:
+  splashscreen:
+  firebase_messaging: ^9.1.0
+  fluttertoast: 
+  flutter_launcher_icons: "^0.8.0"
 
+  # dio:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -84,3 +89,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/app_logo.png"

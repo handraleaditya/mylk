@@ -14,6 +14,15 @@ class DataRepository {
       return collection.where('category', isEqualTo: category).snapshots();
   }
 
+  Stream<QuerySnapshot> getNewOrderStream() {
+    CollectionReference newCollection =
+        FirebaseFirestore.instance.collection('orders');
+    return newCollection.where('status', isEqualTo: 'placed').snapshots();
+
+    // return newCollection;
+    // return collection.where('category', isEqualTo: '').snapshots();
+  }
+
   // 3
   Future<DocumentReference> addItem(Item item) {
     return collection.add(item.toJson());

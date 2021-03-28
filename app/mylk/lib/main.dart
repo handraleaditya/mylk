@@ -9,11 +9,44 @@ import 'package:mylk/models/userModel.dart' as appUser;
 
 import 'package:mylk/utils/AuthWrapper.dart';
 import 'package:provider/provider.dart';
+import 'package:splashscreen/splashscreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(GetMaterialApp(home: Login()));
+  runApp(GetMaterialApp(home: MyApp()));
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => new _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Future<Widget> loadFromFuture() async {
+    // <fetch data from server. ex. login>
+
+    return Future.value(new Login());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height,
+      child: SplashScreen(
+        seconds: 3,
+        navigateAfterSeconds: new Login(),
+        image: new Image.asset(
+          'assets/images/logo.png',
+        ),
+        // loadingText: Text("Loading"),
+        photoSize: 250.0,
+        useLoader: false,
+        // loaderColor: Colors.blue,
+      ),
+    );
+  }
 }
 
 class MylkApp extends StatelessWidget {

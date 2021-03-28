@@ -3,8 +3,10 @@ import 'package:expandable/expandable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:mylk/report.dart';
 
 class MyOrders extends StatefulWidget {
   MyOrders();
@@ -40,13 +42,13 @@ class _MyOrdersState extends State<MyOrders> {
               icon: Icon(Entypo.dots_three_vertical, color: Color(0xFF545D68)),
               onSelected: handleClick,
               itemBuilder: (BuildContext context) {
-                return {'Report', 'Settings'}.map((String choice) {
+                return {'Report'}.map((String choice) {
                   return PopupMenuItem<String>(
                     value: choice,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Icon(AntDesign.exclamationcircleo,
+                        Icon(FontAwesome.exclamation_triangle,
                             color: Color(0xFF545D68)),
                         Text(choice),
                       ],
@@ -96,7 +98,8 @@ class _MyOrdersState extends State<MyOrders> {
 
   void handleClick(String value) {
     switch (value) {
-      case 'Logout':
+      case 'Report':
+        Get.to(() => SubmitReport());
         break;
       case 'Settings':
         break;
@@ -125,6 +128,7 @@ class _MyOrdersState extends State<MyOrders> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Card(
+              color: getColor(doc['status']),
               elevation: 0,
               child: Padding(
                 padding: const EdgeInsets.only(
@@ -143,7 +147,7 @@ class _MyOrdersState extends State<MyOrders> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Order #" + index.toString(),
+                              "Order ",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             ),
@@ -177,9 +181,41 @@ class _MyOrdersState extends State<MyOrders> {
                         padding: const EdgeInsets.only(),
                         child: Row(children: [
                           Icon(AntDesign.questioncircleo, size: 14),
-                          Text(' Status : ' + doc['status'])
+                          Text(' Status : ' + doc['status'].toUpperCase())
                         ]),
-                      )
+                      ),
+                      doc['status'] == 'placed'
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                ButtonTheme(
+                                  height: 25,
+                                  child: RaisedButton(
+                                    color: Colors.red,
+
+                                    highlightColor: Colors.red,
+                                    // highlightedBorderColor: Colors.red,
+                                    focusColor: Colors.red,
+                                    // borderSide: BorderSide(
+                                    //   color: Colors.red,
+                                    // ),
+                                    onPressed: () async {
+                                      await FirebaseFirestore.instance
+                                          .collection("orders")
+                                          .doc(doc.id)
+                                          .set({'status': 'canceled'},
+                                              SetOptions(merge: true));
+                                    },
+                                    child: Text(
+                                      "Cancel",
+                                      style: TextStyle(
+                                          fontSize: 12, color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Container(),
                     ],
                   )),
                   expanded: Column(
@@ -246,7 +282,7 @@ class _MyOrdersState extends State<MyOrders> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Ordedr',
+                    'Order',
                     style: TextStyle(fontSize: 18),
                   ),
                 ],
@@ -275,6 +311,20 @@ class _MyOrdersState extends State<MyOrders> {
         subtitle: new Text(doc["items"].toString()));
   }
 
+  Color getColor(String status) {
+    if (status == 'accepted') {
+      return Colors.green;
+    } else if (status == "placed") {
+      return Colors.yellow;
+    } else if (status == "canceled") {
+      return Colors.red;
+    } else if (status == "completed") {
+      return Colors.white;
+    } else {
+      return Colors.white;
+    }
+  }
+
   DataRow _getDataRow(doc) {
     return DataRow(
       cells: <DataCell>[
@@ -290,11 +340,14 @@ class _MyOrdersState extends State<MyOrders> {
   }
 
   getOrders(AsyncSnapshot<QuerySnapshot> snapshot) {
-    int index = snapshot.data.docs.length + 1;
+    // int index = snapshot.data.docs.length + 1;
+    int index = 0;
     return snapshot.data.docs.map((doc) {
-      index--;
+      index++;
       return orderCard(doc, index);
     }).toList();
+    // .reversed
+    // .toList();
   }
 
   getItems(doc) {

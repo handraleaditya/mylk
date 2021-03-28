@@ -12,6 +12,7 @@
           "package_name": "com.lucyd.mylk"
         }
       },
+      
       "oauth_client": [
         {
           "client_id": "280140733098-s2rd4r00qpkb5sqdp6a0fvunfvra2kps.apps.googleusercontent.com",
@@ -34,6 +35,6 @@
         }
       }
     }
-  ],
+  ], 
   "configuration_version": "1"
 }

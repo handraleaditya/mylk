@@ -1,6 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -9,38 +8,32 @@ import 'package:get/get.dart';
 import 'package:mylk/Auth.dart';
 import 'package:mylk/Login.dart';
 import 'package:mylk/admin/adminHome.dart';
+import 'package:mylk/admin/newOrders.dart';
 import 'package:mylk/cart.dart';
 import 'package:mylk/models/userModel.dart' as appUser;
 import 'package:mylk/myOrders.dart';
-import 'package:mylk/report.dart';
 
 import 'package:mylk/storePage.dart';
 import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
+import 'package:flutter/rendering.dart';
 
-class Home extends StatefulWidget {
+class AllOrders extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return _HomeState();
-  }
+  _AllOrdersState createState() => _AllOrdersState();
 }
 
-class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
-
+class _AllOrdersState extends State<AllOrders>
+    with SingleTickerProviderStateMixin {
   TabController tabController;
+  appUser.User userData;
 
   @override
   void initState() {
     // TODO: implement initState
-
     super.initState();
-
-    tabController = TabController(length: 4, vsync: this);
+    tabController = TabController(length: 3, vsync: this);
   }
-
-  appUser.User userData;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +67,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('My Orders',
+                  Text('All Orderd s',
                       style: TextStyle(
                         fontFamily: 'Varela',
                         fontSize: 18.0,
@@ -151,7 +144,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ],
               ),
               onTap: () {
-                Get.to(() => SubmitReport());
+                FirebaseAuth.instance.signOut();
+                Get.to(() => Login());
+
+                // Update the state of the app
+                // ...
+                // Then close the drawer
               },
             ),
             ListTile(
@@ -185,11 +183,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           elevation: 0,
           centerTitle: true,
           title: Text(
-            "Store",
+            "All orders",
             style: TextStyle(color: Colors.grey[800]),
           )),
       body: ListView(
-        physics: NeverScrollableScrollPhysics(),
         padding: EdgeInsets.only(left: 0),
         children: <Widget>[
           SizedBox(
@@ -205,41 +202,33 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               unselectedLabelColor: Color(0xFFCDCDCD),
               tabs: [
                 Tab(
-                  child: Text('All',
+                  child: Text('New',
                       style: TextStyle(
                         fontFamily: 'Varela',
                         fontSize: 20.0,
                       )),
                 ),
                 Tab(
-                  child: Text('Milk',
+                  child: Text('Completed',
                       style: TextStyle(
                         fontFamily: 'Varela',
                         fontSize: 18.0,
                       )),
                 ),
                 Tab(
-                  child: Text('Dahi ',
+                  child: Text('All',
                       style: TextStyle(
                         fontFamily: 'Varela',
                         fontSize: 18.0,
                       )),
-                ),
-                Tab(
-                  child: Text('Others ',
-                      style: TextStyle(
-                        fontFamily: 'Varela',
-                        fontSize: 18.0,
-                      )),
-                ),
+                )
               ]),
           Container(
             height: MediaQuery.of(context).size.height - 50,
             width: double.infinity,
             child: TabBarView(controller: tabController, children: [
-              StorePage(category: 'all'),
+              NewOrders(),
               StorePage(category: 'milk'),
-              StorePage(category: 'dahi'),
               StorePage(category: 'others')
             ]),
           ),
