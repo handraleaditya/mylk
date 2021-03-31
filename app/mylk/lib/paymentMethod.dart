@@ -8,17 +8,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 // field. The field is of the type `SingingCharacter`, an enum.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:get/get.dart';
 import 'package:mylk/models/orderController.dart';
 import 'package:mylk/models/orderModel.dart';
 import 'package:mylk/myOrders.dart';
+import 'package:mylk/utils/notification.dart';
 
 /// This is the main application widget.
 class PaymentMethod extends StatefulWidget {
   Order order;
   PaymentMethod({Key key, this.order}) : super(key: key);
-
-  static const String _title = 'Flutter Code Sample';
 
   @override
   _PaymentMethodState createState() => _PaymentMethodState();
@@ -28,7 +28,6 @@ class _PaymentMethodState extends State<PaymentMethod> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: PaymentMethod._title,
       home: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -41,12 +40,6 @@ class _PaymentMethodState extends State<PaymentMethod> {
               Navigator.of(context).pop();
             },
           ),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.remove_shopping_cart, color: Color(0xFF545D68)),
-              onPressed: () {},
-            )
-          ],
           title: Text('Payment Method (2/2)',
               style: TextStyle(
                   fontFamily: 'Varela',
@@ -122,6 +115,8 @@ class _PaymentMethodWidgetState extends State<PaymentMethodWidget> {
   }
 
   Widget ProceedButton(Order order) {
+    FlutterCart cart = FlutterCart();
+
     return RaisedButton(
       padding: EdgeInsets.only(top: 15, bottom: 15, left: 30, right: 30),
       textColor: Colors.white,
@@ -135,6 +130,12 @@ class _PaymentMethodWidgetState extends State<PaymentMethodWidget> {
       ),
       onPressed: () async {
         placeOrder(order);
+        SendNotification(
+            'Yay! New order placed!',
+            "Rs." +
+                order.total.toInt().toString() +
+                " order placed, please check inside the app.");
+        cart.deleteAllCart();   
         Get.to(() => MyOrders());
       },
       shape: new RoundedRectangleBorder(

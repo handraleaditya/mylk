@@ -62,7 +62,7 @@ class _StorePageState extends State<StorePage> {
   Widget buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
     // return Text('hi');
     return GridView.count(
-      padding: EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 20),
+      padding: EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 200),
       shrinkWrap: true,
       crossAxisCount: 2,
       primary: false,

@@ -7,6 +7,9 @@ import 'package:get/get.dart';
 import 'package:mylk/Login.dart';
 import 'package:mylk/admin/allOrders.dart';
 import 'package:mylk/cart.dart';
+import 'package:mylk/admin/allUsers.dart';
+import 'package:mylk/admin/reports.dart';
+
 import 'package:mylk/myOrders.dart';
 
 class AdminHome extends StatefulWidget {
@@ -72,17 +75,17 @@ class _AdminHomeState extends State<AdminHome> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('My Cart',
+                  Text('All users',
                       style: TextStyle(
                         fontFamily: 'Varela',
                         fontSize: 18.0,
                         fontWeight: FontWeight.normal,
                       )),
-                  Icon(MaterialCommunityIcons.cart_outline),
+                  Icon(Feather.users)
                 ],
               ),
               onTap: () {
-                Get.to(() => Cart());
+                Get.to(() => AllUsers());
 
                 // Update the state of the app
                 // ...
@@ -93,28 +96,7 @@ class _AdminHomeState extends State<AdminHome> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Help',
-                      style: TextStyle(
-                        fontFamily: 'Varela',
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.normal,
-                      )),
-                  Icon(Feather.help_circle)
-                ],
-              ),
-              onTap: () {
-                Get.to(() => AdminHome());
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                // Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Report',
+                  Text('All Reports',
                       style: TextStyle(
                         fontFamily: 'Varela',
                         fontSize: 18.0,
@@ -128,8 +110,7 @@ class _AdminHomeState extends State<AdminHome> {
                 ],
               ),
               onTap: () {
-                FirebaseAuth.instance.signOut();
-                Get.to(() => Login());
+                Get.to(() => Reports());
 
                 // Update the state of the app
                 // ...
@@ -162,9 +143,122 @@ class _AdminHomeState extends State<AdminHome> {
         ),
       ),
       body: ListView(
-        children: [Text("ahif")],
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+              child: Card(
+                child: InkWell(
+                  onTap: () {
+                    Get.to(() => AllOrders());
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "All Orders",
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                              Icon(Entypo.documents)
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            color: Colors.white,
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+              child: Card(
+                child: InkWell(
+                  onTap: () {
+                    Get.to(() => AllUsers());
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "All Users",
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                              Icon(Feather.users),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            color: Colors.white,
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+              child: Card(
+                child: InkWell(
+                  onTap: () {
+                    Get.to(() => Reports());
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "All Reports",
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                              Icon(AntDesign.exclamationcircleo),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
       ),
     );
+  }
+
+  Future<String> getTotalUsers() async {
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .snapshots()
+        .length
+        .toString();
   }
 
   _saveDeviceToken() async {
@@ -183,20 +277,16 @@ class _AdminHomeState extends State<AdminHome> {
 
     await tokens.set({
       'fcm': fcmToken,
-    });
+    }, SetOptions(merge: true));
     // Save it to Firestore
     if (fcmToken != null) {
       print('FCM WAS NULL');
 
-      var tokens = FirebaseFirestore.instance
-          .collection('global')
-          .doc(uid)
-          .collection('admin')
-          .doc();
+      var tokens = FirebaseFirestore.instance.collection('global').doc('admin');
 
       await tokens.set({
         'fcm': fcmToken,
-      });
+      }, SetOptions(merge: true));
     }
   }
 }

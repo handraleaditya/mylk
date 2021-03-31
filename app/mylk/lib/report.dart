@@ -5,6 +5,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:mylk/home.dart';
+import 'package:mylk/utils/notification.dart';
 
 class SubmitReport extends StatefulWidget {
   @override
@@ -161,6 +162,7 @@ class _SubmitReportState extends State<SubmitReport> {
       ),
       onPressed: () async {
         createReport();
+
         Fluttertoast.showToast(
           msg: "Report submitted successfully",
           toastLength: Toast.LENGTH_SHORT,
@@ -168,6 +170,7 @@ class _SubmitReportState extends State<SubmitReport> {
           // backgroundColor: "#e74c3c",
           // textColor: '#ffffff'
         );
+
         Get.to(() => Home());
       },
       shape: new RoundedRectangleBorder(
@@ -186,5 +189,11 @@ class _SubmitReportState extends State<SubmitReport> {
       'createdAt': DateTime.now().toString(),
       'status': 'new'
     }, SetOptions(merge: true));
+
+    SendNotification(
+        '☹️ User has submitted a report 🚩 ',
+        "User " +
+            currentUser.phoneNumber +
+            " has submitted a report, please check inside the app.");
   }
 }

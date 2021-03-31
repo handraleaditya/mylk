@@ -9,6 +9,7 @@ import 'package:mylk/Auth.dart';
 import 'package:mylk/Login.dart';
 import 'package:mylk/admin/adminHome.dart';
 import 'package:mylk/admin/newOrders.dart';
+
 import 'package:mylk/cart.dart';
 import 'package:mylk/models/userModel.dart' as appUser;
 import 'package:mylk/myOrders.dart';
@@ -19,6 +20,9 @@ import 'package:splashscreen/splashscreen.dart';
 import 'package:flutter/rendering.dart';
 
 class AllOrders extends StatefulWidget {
+  // final String category;
+  // AllOrders({Key key,this.category}):super(key:key)
+
   @override
   _AllOrdersState createState() => _AllOrdersState();
 }
@@ -26,13 +30,15 @@ class AllOrders extends StatefulWidget {
 class _AllOrdersState extends State<AllOrders>
     with SingleTickerProviderStateMixin {
   TabController tabController;
+  final ScrollController _scrollController = ScrollController();
+
   appUser.User userData;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    tabController = TabController(length: 3, vsync: this);
+    tabController = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -47,136 +53,7 @@ class _AllOrdersState extends State<AllOrders>
 
     return Scaffold(
       backgroundColor: Colors.white,
-      drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(
-                  'assets/images/logo.png',
-                )),
-              ),
-            ),
-            ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('All Orderd s',
-                      style: TextStyle(
-                        fontFamily: 'Varela',
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.normal,
-                      )),
-                  Icon(Entypo.documents)
-                ],
-              ),
-              onTap: () {
-                Get.to(() => MyOrders());
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                // Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('My Cart',
-                      style: TextStyle(
-                        fontFamily: 'Varela',
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.normal,
-                      )),
-                  Icon(MaterialCommunityIcons.cart_outline),
-                ],
-              ),
-              onTap: () {
-                Get.to(() => Cart());
 
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-              },
-            ),
-            ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Help',
-                      style: TextStyle(
-                        fontFamily: 'Varela',
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.normal,
-                      )),
-                  Icon(Feather.help_circle)
-                ],
-              ),
-              onTap: () {
-                Get.to(() => AdminHome());
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                // Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Report',
-                      style: TextStyle(
-                        fontFamily: 'Varela',
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.normal,
-                      )),
-                  Icon(
-                    AntDesign.exclamationcircleo,
-                    size: 22,
-                  )
-                  // Icon(Octicons.report)
-                ],
-              ),
-              onTap: () {
-                FirebaseAuth.instance.signOut();
-                Get.to(() => Login());
-
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-              },
-            ),
-            ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Logout',
-                      style: TextStyle(
-                        fontFamily: 'Varela',
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.normal,
-                      )),
-                  Icon(Icons.logout)
-                ],
-              ),
-              onTap: () {
-                FirebaseAuth.instance.signOut();
-                Get.to(() => Login());
-
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-              },
-            ),
-          ],
-        ),
-      ),
       appBar: AppBar(
           iconTheme: IconThemeData(color: Color(0xFF545D68)),
           backgroundColor: Colors.white,
@@ -187,13 +64,15 @@ class _AllOrdersState extends State<AllOrders>
             style: TextStyle(color: Colors.grey[800]),
           )),
       body: ListView(
-        padding: EdgeInsets.only(left: 0),
+        physics: NeverScrollableScrollPhysics(),
+        // padding: EdgeInsets.only(left: 0),
         children: <Widget>[
           SizedBox(
             height: 0,
           ),
 
           TabBar(
+              // physics: NeverScrollableScrollPhysics(),
               controller: tabController,
               indicatorColor: Colors.grey[100],
               labelColor: Colors.black,
@@ -202,10 +81,21 @@ class _AllOrdersState extends State<AllOrders>
               unselectedLabelColor: Color(0xFFCDCDCD),
               tabs: [
                 Tab(
-                  child: Text('New',
+                  child: Row(
+                    children: [
+                      Text('New ',
+                          style: TextStyle(
+                            fontFamily: 'Varela',
+                            fontSize: 20.0,
+                          )),
+                    ],
+                  ),
+                ),
+                Tab(
+                  child: Text('Accepted',
                       style: TextStyle(
                         fontFamily: 'Varela',
-                        fontSize: 20.0,
+                        fontSize: 18.0,
                       )),
                 ),
                 Tab(
@@ -216,7 +106,7 @@ class _AllOrdersState extends State<AllOrders>
                       )),
                 ),
                 Tab(
-                  child: Text('All',
+                  child: Text('Cancelled',
                       style: TextStyle(
                         fontFamily: 'Varela',
                         fontSize: 18.0,
@@ -227,23 +117,25 @@ class _AllOrdersState extends State<AllOrders>
             height: MediaQuery.of(context).size.height - 50,
             width: double.infinity,
             child: TabBarView(controller: tabController, children: [
-              NewOrders(),
-              StorePage(category: 'milk'),
-              StorePage(category: 'others')
+              NewOrders(
+                category: 'placed',
+              ),
+              NewOrders(
+                category: 'accepted',
+              ),
+              NewOrders(
+                category: 'completed',
+              ),
+              NewOrders(
+                category: 'cancelled',
+              ),
             ]),
           ),
 
           // BottomNavigationBar(items: items)
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        heroTag: "FAB",
-        onPressed: () {
-          Get.to(() => Cart());
-        },
-        backgroundColor: Colors.black,
-        child: Icon(Icons.shopping_cart),
-      ),
+
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

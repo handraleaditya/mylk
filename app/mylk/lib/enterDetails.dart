@@ -56,12 +56,6 @@ class _EnterDetailsState extends State<EnterDetails> {
               Navigator.of(context).pop();
             },
           ),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.remove_shopping_cart, color: Color(0xFF545D68)),
-              onPressed: () {},
-            )
-          ],
           title: Text('Enter your details (1/2)',
               style: TextStyle(
                   fontFamily: 'Varela',
@@ -77,9 +71,8 @@ class _EnterDetailsState extends State<EnterDetails> {
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 30),
                 child: Column(
                   children: <Widget>[
-                    TextField(
+                    TextFormField(
                       autofocus: true,
-
                       decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -94,12 +87,12 @@ class _EnterDetailsState extends State<EnterDetails> {
                           )),
                       onTap: () {},
                       controller: nameController,
-                      // validator: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return 'Please enter your name';
-                      //   }
-                      //   return null;
-                      // },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your name';
+                        }
+                        return null;
+                      },
                     ),
                     SizedBox(
                       height: 20,

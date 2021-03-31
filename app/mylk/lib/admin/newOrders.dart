@@ -3,21 +3,30 @@ import 'package:expandable/expandable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:mylk/cart.dart';
 import 'package:mylk/models/dataRepository.dart';
 import 'package:mylk/models/itemModel.dart';
 import 'package:intl/intl.dart';
 
 class NewOrders extends StatefulWidget {
+  final String category;
+  NewOrders({Key key, this.category}) : super(key: key);
   @override
   _NewOrdersState createState() => _NewOrdersState();
 }
 
 class _NewOrdersState extends State<NewOrders> {
+  final ScrollController _scrollController = ScrollController();
+
   DataRepository repo = DataRepository();
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: <Widget>[buildList(context)]);
+    return Container(
+      color: getColor(),
+      child: ListView(physics: const AlwaysScrollableScrollPhysics(), // new
+          children: <Widget>[buildList(context)]),
+    );
   }
 
   Widget _buildCard(doc) {
@@ -55,7 +64,7 @@ class _NewOrdersState extends State<NewOrders> {
                       Row(
                         children: [
                           Text(
-                            "Order #",
+                            "Order ",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 15),
                           ),
@@ -63,31 +72,61 @@ class _NewOrdersState extends State<NewOrders> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       ),
                       Padding(
+                        padding: const EdgeInsets.only(bottom: 8, top: 5),
+                        child: Row(children: [
+                          Icon(FontAwesome.rupee, size: 14),
+                          Text(
+                            doc['total'].toInt().toString(),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                          )
+                        ]),
+                      ),
+                      Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: Row(children: [
                           Icon(AntDesign.clockcircleo, size: 14),
-                          Text(f.format(dateTime).substring(0, 6))
+                          Padding(
+                              padding: const EdgeInsets.only(left: 2.0),
+                              child: Text(f.format(dateTime).substring(0, 6)))
+                        ]),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Row(children: [
+                          Icon(FontAwesome.calendar, size: 14),
+                          Text(f.format(dateTime).substring(6))
                         ]),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: Row(children: [
                           Icon(AntDesign.user, size: 14),
-                          Text(doc['name'])
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5.0),
+                            child: Text(doc['name']),
+                          )
                         ]),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: Row(children: [
                           Icon(AntDesign.phone, size: 14),
-                          Text(doc['phone'])
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5.0),
+                            child: Text(doc['phone']),
+                          )
                         ]),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(),
                         child: Row(children: [
                           Icon(AntDesign.questioncircleo, size: 14),
-                          Text(' Status : ' + doc['status'])
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5.0),
+                            child: Text('Status : ' +
+                                doc['status'].toString().toUpperCase()),
+                          )
                         ]),
                       ),
                     ],
@@ -106,84 +145,40 @@ class _NewOrdersState extends State<NewOrders> {
                           Expanded(
                             child: Column(
                               children: [
-                                Text(
-                                  ' ' + doc['address'],
-                                  overflow: TextOverflow.visible,
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    doc['address'] + '\n' + doc['address2'],
+                                    overflow: TextOverflow.visible,
+                                  ),
                                 ),
                               ],
                             ),
                           )
                         ]),
                       ),
-                      ButtonBar(
-                        alignment: MainAxisAlignment.center,
-                        buttonPadding: EdgeInsets.only(
-                          left: 5,
-                          right: 5,
-                        ),
-                        children: [
-                          OutlineButton(
-                              borderSide: BorderSide(
-                                color: Colors.yellow,
-                              ),
-                              highlightedBorderColor: Colors.yellow,
-                              highlightColor: Colors.yellow,
-                              textColor: Colors.black,
+                      doc['note'] != ''
+                          ? Padding(
+                              padding: const EdgeInsets.only(left: 20, top: 10),
                               child: Row(children: [
-                                Icon(MaterialCommunityIcons.check_all,
-                                    size: 14),
-                                Text(
-                                  ' Complete',
-                                  style: TextStyle(fontSize: 12),
+                                Icon(FontAwesome.sticky_note, size: 14),
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 0),
+                                        child: Text(
+                                          doc['note'],
+                                          overflow: TextOverflow.visible,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 )
                               ]),
-                              onPressed: () async {
-                                await FirebaseFirestore.instance
-                                    .collection("orders")
-                                    .doc(doc.id)
-                                    .set({'status': 'completed'},
-                                        SetOptions(merge: true));
-                              }),
-                          OutlineButton(
-                              borderSide: BorderSide(color: Colors.red),
-                              highlightedBorderColor: Colors.red,
-                              highlightColor: Colors.red,
-                              textColor: Colors.black,
-                              child: Row(children: [
-                                Icon(MaterialIcons.cancel, size: 14),
-                                Text(
-                                  ' Cancel',
-                                  style: TextStyle(fontSize: 12),
-                                )
-                              ]),
-                              onPressed: () async {
-                                await FirebaseFirestore.instance
-                                    .collection("orders")
-                                    .doc(doc.id)
-                                    .set({'status': 'canceled'},
-                                        SetOptions(merge: true));
-                              }),
-                          OutlineButton(
-                              highlightedBorderColor: Colors.green,
-                              highlightColor: Colors.green,
-                              textColor: Colors.black,
-                              borderSide: BorderSide(color: Colors.green),
-                              child: Row(children: [
-                                Icon(MaterialIcons.check_circle, size: 14),
-                                Text(
-                                  ' Accept',
-                                  style: TextStyle(fontSize: 12),
-                                )
-                              ]),
-                              onPressed: () async {
-                                await FirebaseFirestore.instance
-                                    .collection("orders")
-                                    .doc(doc.id)
-                                    .set({'status': 'accepted'},
-                                        SetOptions(merge: true));
-                              }),
-                        ],
-                      ),
+                            )
+                          : Container(),
+                      returnButtonBar(doc),
                       DataTable(
                         dataRowHeight: 27,
                         // columnSpacing: 10,
@@ -248,7 +243,7 @@ class _NewOrdersState extends State<NewOrders> {
   Widget buildList(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
         // stream: repo.getStream('all'),
-        stream: repo.getNewOrderStream(),
+        stream: returnStream(),
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data.docs.length == 0) {
             return Center(
@@ -271,6 +266,11 @@ class _NewOrdersState extends State<NewOrders> {
               child: Padding(
                   padding: const EdgeInsets.only(left: 0, right: 0),
                   child: new ListView(
+                      controller: _scrollController,
+                      physics: NeverScrollableScrollPhysics(),
+
+                      // physics: const AlwaysScrollableScrollPhysics(), // new
+
                       children: snapshot.data.docs
                           .map((data) => buildListItem(context, data))
                           .toList())));
@@ -295,5 +295,157 @@ class _NewOrdersState extends State<NewOrders> {
                 ),
               ));
         });
+  }
+
+  Stream<QuerySnapshot> returnStream() {
+    if (widget.category == "placed") {
+      return repo.getNewOrderStream();
+    } else if (widget.category == 'accepted') {
+      return repo.getAcceptedOrderstream();
+    } else if (widget.category == 'completed') {
+      return repo.getCompletedOrderStream();
+    } else if (widget.category == 'cancelled') {
+      return repo.getCancelledOrderStream();
+    } else {
+      print('failedcat');
+    }
+  }
+
+  Color getColor() {
+    if (widget.category == "accepted") {
+      return Colors.green;
+    } else if (widget.category == "cancelled") {
+      return Colors.red;
+    } else if (widget.category == "placed") {
+      return Colors.yellow;
+    }
+  }
+
+  ButtonBar returnButtonBar(var doc) {
+    if (widget.category == "placed") {
+      return ButtonBar(
+        alignment: MainAxisAlignment.center,
+        buttonPadding: EdgeInsets.only(
+          left: 5,
+          right: 5,
+        ),
+        children: [
+          OutlineButton(
+              borderSide: BorderSide(
+                color: Colors.yellow,
+              ),
+              highlightedBorderColor: Colors.yellow,
+              highlightColor: Colors.yellow,
+              textColor: Colors.black,
+              child: Row(children: [
+                Icon(MaterialCommunityIcons.check_all, size: 14),
+                Text(
+                  ' Complete',
+                  style: TextStyle(fontSize: 12),
+                )
+              ]),
+              onPressed: () async {
+                await FirebaseFirestore.instance
+                    .collection("orders")
+                    .doc(doc.id)
+                    .set({'status': 'completed'}, SetOptions(merge: true));
+              }),
+          OutlineButton(
+              borderSide: BorderSide(color: Colors.red),
+              highlightedBorderColor: Colors.red,
+              highlightColor: Colors.red,
+              textColor: Colors.black,
+              child: Row(children: [
+                Icon(MaterialIcons.cancel, size: 14),
+                Text(
+                  ' Cancel',
+                  style: TextStyle(fontSize: 12),
+                )
+              ]),
+              onPressed: () async {
+                await FirebaseFirestore.instance
+                    .collection("orders")
+                    .doc(doc.id)
+                    .set({'status': 'canceled'}, SetOptions(merge: true));
+              }),
+          OutlineButton(
+              highlightedBorderColor: Colors.green,
+              highlightColor: Colors.green,
+              textColor: Colors.black,
+              borderSide: BorderSide(color: Colors.green),
+              child: Row(children: [
+                Icon(MaterialIcons.check_circle, size: 14),
+                Text(
+                  ' Accept',
+                  style: TextStyle(fontSize: 12),
+                )
+              ]),
+              onPressed: () async {
+                await FirebaseFirestore.instance
+                    .collection("orders")
+                    .doc(doc.id)
+                    .set({'status': 'accepted'}, SetOptions(merge: true));
+              }),
+        ],
+      );
+    } else if (widget.category == 'accepted') {
+      return ButtonBar(
+        alignment: MainAxisAlignment.center,
+        buttonPadding: EdgeInsets.only(
+          left: 5,
+          right: 5,
+        ),
+        children: [
+          OutlineButton(
+              borderSide: BorderSide(
+                color: Colors.yellow,
+              ),
+              highlightedBorderColor: Colors.yellow,
+              highlightColor: Colors.yellow,
+              textColor: Colors.black,
+              child: Row(children: [
+                Icon(MaterialCommunityIcons.check_all, size: 14),
+                Text(
+                  ' Complete',
+                  style: TextStyle(fontSize: 12),
+                )
+              ]),
+              onPressed: () async {
+                await FirebaseFirestore.instance
+                    .collection("orders")
+                    .doc(doc.id)
+                    .set({'status': 'completed'}, SetOptions(merge: true));
+              }),
+          OutlineButton(
+              borderSide: BorderSide(color: Colors.red),
+              highlightedBorderColor: Colors.red,
+              highlightColor: Colors.red,
+              textColor: Colors.black,
+              child: Row(children: [
+                Icon(MaterialIcons.cancel, size: 14),
+                Text(
+                  ' Cancel',
+                  style: TextStyle(fontSize: 12),
+                )
+              ]),
+              onPressed: () async {
+                await FirebaseFirestore.instance
+                    .collection("orders")
+                    .doc(doc.id)
+                    .set({'status': 'canceled'}, SetOptions(merge: true));
+              }),
+        ],
+      );
+    } else if (widget.category == 'completed' ||
+        widget.category == 'cancelled') {
+      return ButtonBar(
+        alignment: MainAxisAlignment.center,
+        buttonPadding: EdgeInsets.only(
+          left: 5,
+          right: 5,
+        ),
+        children: [],
+      );
+    }
   }
 }

@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mylk/Auth.dart';
+import 'package:mylk/utils/constants.dart';
+
 import 'package:mylk/Otp.dart';
 import 'package:mylk/home.dart';
 
@@ -18,6 +20,8 @@ class _LoginState extends State<Login> {
   User user;
   String verificationId, error;
   bool codeSent = false;
+  String buttonText = 'Next';
+  String labelText = 'Please enter your mobile number';
 
   TextEditingController phoneController = new TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -39,7 +43,7 @@ class _LoginState extends State<Login> {
                   padding: EdgeInsets.only(left: 0),
                   child: Text("Welcome to Rajveer Dairy",
                       style: TextStyle(
-                          color: Colors.grey[900],
+                          color: Constants.primaryColor,
                           fontWeight: FontWeight.w900,
                           fontSize: 40)),
                 ),
@@ -48,9 +52,10 @@ class _LoginState extends State<Login> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 01),
-                  child: Text("Please enter your mobile number",
+                  child: Text(labelText,
                       style: TextStyle(
-                          color: Colors.grey[800],
+                          // color: Colors.grey[800],
+                          color: Constants.primaryColor,
                           fontWeight: FontWeight.w900,
                           fontSize: 15)),
                 ),
@@ -62,10 +67,10 @@ class _LoginState extends State<Login> {
                   autofocus: true,
                   // maxLength: 10,
                   inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    // FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                     LengthLimitingTextInputFormatter(10),
                   ],
-                  keyboardType: TextInputType.number,
+                  // keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                       prefixText: "+91",
                       enabledBorder: OutlineInputBorder(
@@ -77,8 +82,10 @@ class _LoginState extends State<Login> {
                       hintText: "",
                       prefixIcon: IconTheme(
                         child: Icon(Icons.phone),
-                        data: IconThemeData(color: Colors.grey[800]),
+                        // data: IconThemeData(color: Colors.grey[800]),
+                        data: IconThemeData(color: Constants.primaryColor),
                       )),
+
                   onTap: () {},
                   controller: phoneController,
                 ),
@@ -91,17 +98,28 @@ class _LoginState extends State<Login> {
                     padding: EdgeInsets.only(
                         top: 15, bottom: 15, left: 30, right: 30),
                     textColor: Colors.white,
-                    color: Colors.grey[900],
+                    color: Constants.primaryColor,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [Text("Next"), Icon(Icons.chevron_right)],
+                      children: [Text(buttonText), Icon(Icons.chevron_right)],
                     ),
                     onPressed: () async {
                       print('+91' +
                           phoneController.text +
                           'verIDs' +
                           verificationId.toString());
-                      await verifyPhone('+91' + phoneController.text);
+                      setState(() {
+                        buttonText = "Loading...";
+                      });
+                      if (phoneController.text.length == 10) {
+                        await verifyPhone('+91' + phoneController.text);
+                      } else {
+                        setState(() {
+                          buttonText = "Next";
+
+                          labelText = "Invalid phone number entered, try again";
+                        });
+                      }
                       // Get.to(() => Otp());
                       // Get.to(() => Home());
                     },
@@ -120,16 +138,28 @@ class _LoginState extends State<Login> {
 
   Future<dynamic> verifyPhone(String phone) async {
     final PhoneVerificationCompleted verified = (AuthCredential authResult) {
+      setState(() {
+        buttonText = 'Next';
+        labelText = 'Please enter your mobile number';
+      });
       return AuthController().signIn(context, authResult, () {});
     };
 
     final PhoneVerificationFailed verificationfailed =
         (FirebaseAuthException authException) {
+      setState(() {
+        buttonText = 'Next';
+        labelText = "Invalid phone number entered, try again";
+      });
       debugPrint(authException.toString());
     };
 
     final PhoneCodeSent smsSent = (String verId, [int forceResend]) {
       verificationId = verId;
+      setState(() {
+        buttonText = 'Next';
+        labelText = 'Please enter your mobile number';
+      });
 
       Get.to(() => Otp(verificationId: verId));
     };

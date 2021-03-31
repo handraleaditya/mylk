@@ -37,7 +37,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
     super.initState();
 
-    tabController = TabController(length: 4, vsync: this);
+    tabController = TabController(length: 5, vsync: this);
   }
 
   appUser.User userData;
@@ -47,7 +47,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     FirebaseAuth.instance.authStateChanges().listen((User user) {
       if (user == null) {
         print('User is currently signed out!');
+      } else if (user.phoneNumber == '+918888888888') {
+        saveUserPhone(user);
+        Get.to(() => AdminHome());
       } else {
+        saveUserPhone(user);
         print('User is signed in!' + user.uid);
       }
     });
@@ -232,6 +236,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         fontSize: 18.0,
                       )),
                 ),
+                Tab(
+                  child: Text('Subscriptions ',
+                      style: TextStyle(
+                        fontFamily: 'Varela',
+                        fontSize: 18.0,
+                      )),
+                ),
               ]),
           Container(
             height: MediaQuery.of(context).size.height - 50,
@@ -240,7 +251,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               StorePage(category: 'all'),
               StorePage(category: 'milk'),
               StorePage(category: 'dahi'),
-              StorePage(category: 'others')
+              StorePage(category: 'others'),
+              StorePage(category: 'subscription')
             ]),
           ),
 
@@ -257,6 +269,21 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
+  }
+
+  saveUserPhone(User user) async {
+    String phone;
+    var profile = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+    phone = profile.data()['phone'] ?? "";
+    if (phone == "") {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .set({'phone': user.phoneNumber}, SetOptions(merge: true));
+    }
   }
 
   void handleClick(String value) {

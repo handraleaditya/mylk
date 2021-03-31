@@ -6,7 +6,9 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:mylk/home.dart';
 import 'package:mylk/report.dart';
+import 'package:mylk/utils/notification.dart';
 
 class MyOrders extends StatefulWidget {
   MyOrders();
@@ -34,7 +36,7 @@ class _MyOrdersState extends State<MyOrders> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Color(0xFF545D68)),
             onPressed: () {
-              Navigator.of(context).pop();
+              Get.to(() => Home());
             },
           ),
           actions: <Widget>[
@@ -84,6 +86,7 @@ class _MyOrdersState extends State<MyOrders> {
           stream: FirebaseFirestore.instance
               .collection("orders")
               .where('uid', isEqualTo: user.uid)
+              .orderBy('createdAt', descending: true)
               .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -205,6 +208,12 @@ class _MyOrdersState extends State<MyOrders> {
                                           .doc(doc.id)
                                           .set({'status': 'canceled'},
                                               SetOptions(merge: true));
+
+                                      SendNotification(
+                                          '☹️ User has cancelled order ',
+                                          "User " +
+                                              doc['phone'].toString() +
+                                              " order cancelled by user, please check inside the app.");
                                     },
                                     child: Text(
                                       "Cancel",
