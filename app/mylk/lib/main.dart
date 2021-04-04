@@ -5,11 +5,13 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mylk/Auth.dart';
 import 'package:mylk/Login.dart';
 import 'package:get/get.dart';
+import 'package:mylk/home.dart';
 import 'package:mylk/models/userController.dart';
 import 'package:mylk/models/userModel.dart' as appUser;
 
 import 'package:mylk/utils/AuthWrapper.dart';
 import 'package:provider/provider.dart';
+
 import 'package:splashscreen/splashscreen.dart';
 import 'package:mylk/fcm.dart';
 
@@ -50,7 +52,8 @@ class _MyAppState extends State<MyApp> {
   Future<Widget> loadFromFuture() async {
     // <fetch data from server. ex. login>
 
-    return Future.value(new Login());
+    // return Future.value(new Login());
+    return Future.value(new Home());
   }
 
   @override
@@ -58,11 +61,11 @@ class _MyAppState extends State<MyApp> {
     return Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.height,
-     child: Stack(
+      child: Stack(
         children: [
           SplashScreen(
             seconds: 3,
-            navigateAfterSeconds: new Login(),
+            navigateAfterSeconds: new Wrapper(),
             // image: new Image.asset(
             //   'assets/images/logo.png',
             // ),

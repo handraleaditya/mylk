@@ -72,7 +72,7 @@ class _AllOrdersState extends State<AllOrders>
           ),
 
           TabBar(
-              // physics: NeverScrollableScrollPhysics(),
+              physics: NeverScrollableScrollPhysics(),
               controller: tabController,
               indicatorColor: Colors.grey[100],
               labelColor: Colors.black,
@@ -114,7 +114,7 @@ class _AllOrdersState extends State<AllOrders>
                 )
               ]),
           Container(
-            height: MediaQuery.of(context).size.height - 50,
+            height: MediaQuery.of(context).size.height,
             width: double.infinity,
             child: TabBarView(controller: tabController, children: [
               NewOrders(

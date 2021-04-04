@@ -176,7 +176,7 @@ class _AllUsersState extends State<AllUsers> {
           }
 
           return Container(
-              height: MediaQuery.of(context).size.height + 200,
+              height: MediaQuery.of(context).size.height + 500,
               child: Padding(
                   padding: const EdgeInsets.only(left: 0, right: 0),
                   child: new ListView(

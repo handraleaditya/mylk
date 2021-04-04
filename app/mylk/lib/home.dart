@@ -8,6 +8,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:mylk/Auth.dart';
 import 'package:mylk/Login.dart';
+import 'package:mylk/about.dart';
 import 'package:mylk/admin/adminHome.dart';
 import 'package:mylk/cart.dart';
 import 'package:mylk/models/userModel.dart' as appUser;
@@ -37,13 +38,18 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
     super.initState();
 
-    tabController = TabController(length: 5, vsync: this);
+    tabController = TabController(length: 4, vsync: this);
   }
 
   appUser.User userData;
 
   @override
   Widget build(BuildContext context) {
+    const icon1 = Icon(Icons.drive_eta);
+    final action = () async {
+      print('IconButton of  tapped.');
+      return true;
+    };
     FirebaseAuth.instance.authStateChanges().listen((User user) {
       if (user == null) {
         print('User is currently signed out!');
@@ -120,7 +126,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Help',
+                  Text('About',
                       style: TextStyle(
                         fontFamily: 'Varela',
                         fontSize: 18.0,
@@ -130,7 +136,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ],
               ),
               onTap: () {
-                Get.to(() => AdminHome());
+                Get.to(() => About());
                 // Update the state of the app
                 // ...
                 // Then close the drawer
@@ -184,14 +190,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         ),
       ),
       appBar: AppBar(
-          iconTheme: IconThemeData(color: Color(0xFF545D68)),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          title: Text(
-            "Store",
-            style: TextStyle(color: Colors.grey[800]),
-          )),
+        iconTheme: IconThemeData(color: Color(0xFF545D68)),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          "Store",
+          style: TextStyle(color: Colors.grey[800]),
+        ),
+      ),
       body: ListView(
         physics: NeverScrollableScrollPhysics(),
         padding: EdgeInsets.only(left: 0),
@@ -208,13 +215,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               labelPadding: EdgeInsets.only(right: 50.0, left: 40),
               unselectedLabelColor: Color(0xFFCDCDCD),
               tabs: [
-                Tab(
-                  child: Text('All',
-                      style: TextStyle(
-                        fontFamily: 'Varela',
-                        fontSize: 20.0,
-                      )),
-                ),
                 Tab(
                   child: Text('Milk',
                       style: TextStyle(
@@ -248,7 +248,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             height: MediaQuery.of(context).size.height - 50,
             width: double.infinity,
             child: TabBarView(controller: tabController, children: [
-              StorePage(category: 'all'),
+              // StorePage(category: 'al l'),
               StorePage(category: 'milk'),
               StorePage(category: 'dahi'),
               StorePage(category: 'others'),

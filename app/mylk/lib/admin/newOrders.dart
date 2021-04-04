@@ -22,11 +22,13 @@ class _NewOrdersState extends State<NewOrders> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: getColor(),
-      child: ListView(physics: const AlwaysScrollableScrollPhysics(), // new
-          children: <Widget>[buildList(context)]),
-    );
+    return ListView(physics: const AlwaysScrollableScrollPhysics(), // new
+        children: <Widget>[
+          buildList(context),
+          SizedBox(
+            height: 300,
+          )
+        ]);
   }
 
   Widget _buildCard(doc) {
@@ -262,12 +264,13 @@ class _NewOrdersState extends State<NewOrders> {
           }
 
           return Container(
-              height: MediaQuery.of(context).size.height + 200,
+              color: getColor(),
+              height: MediaQuery.of(context).size.height - 130,
               child: Padding(
                   padding: const EdgeInsets.only(left: 0, right: 0),
                   child: new ListView(
                       controller: _scrollController,
-                      physics: NeverScrollableScrollPhysics(),
+                      // physics: NeverScrollableScrollPhysics(),
 
                       // physics: const AlwaysScrollableScrollPhysics(), // new
 

@@ -40,10 +40,10 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 0),
-                  child: Text("Welcome to Rajveer Dairy",
+                  padding: EdgeInsets.only(top: 30),
+                  child: Text("Welcome to Rajveer Dairy and sweets",
                       style: TextStyle(
-                          color: Constants.primaryColor,
+                          color: Colors.grey[900],
                           fontWeight: FontWeight.w900,
                           fontSize: 40)),
                 ),
@@ -54,8 +54,8 @@ class _LoginState extends State<Login> {
                   padding: EdgeInsets.only(left: 01),
                   child: Text(labelText,
                       style: TextStyle(
-                          // color: Colors.grey[800],
-                          color: Constants.primaryColor,
+                          color: Colors.grey[800],
+                          // color: Constants.primaryColor,
                           fontWeight: FontWeight.w900,
                           fontSize: 15)),
                 ),
@@ -64,12 +64,12 @@ class _LoginState extends State<Login> {
                 ),
                 TextFormField(
                   style: TextStyle(letterSpacing: 2),
-                  autofocus: true,
-                  // maxLength: 10,
-                  inputFormatters: [
-                    // FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                    LengthLimitingTextInputFormatter(10),
-                  ],
+                  // autofocus: true,
+                  maxLength: 10,
+                  // inputFormatters: [
+                  //   // FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                  //   // LengthLimitingTextInputFormatter(10),
+                  // ],
                   // keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                       prefixText: "+91",
@@ -82,11 +82,11 @@ class _LoginState extends State<Login> {
                       hintText: "",
                       prefixIcon: IconTheme(
                         child: Icon(Icons.phone),
-                        // data: IconThemeData(color: Colors.grey[800]),
-                        data: IconThemeData(color: Constants.primaryColor),
+                        data: IconThemeData(color: Colors.grey[800]),
+                        // data: IconThemeData(color: Constants.primaryColor),
                       )),
 
-                  onTap: () {},
+                  // onTap: () {},
                   controller: phoneController,
                 ),
                 SizedBox(
@@ -98,7 +98,7 @@ class _LoginState extends State<Login> {
                     padding: EdgeInsets.only(
                         top: 15, bottom: 15, left: 30, right: 30),
                     textColor: Colors.white,
-                    color: Constants.primaryColor,
+                    color: Colors.grey[900],
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [Text(buttonText), Icon(Icons.chevron_right)],

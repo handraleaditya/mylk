@@ -42,7 +42,11 @@ class _ReportsState extends State<Reports> {
         backgroundColor: Colors.white,
         body: Padding(
           padding: const EdgeInsets.only(top: 10.0),
-          child: ListView(children: <Widget>[buildList(context)]),
+          child: ListView(children: <Widget>[
+            buildList(context),
+            SizedBox(height: 300),
+            Padding(padding: EdgeInsets.only(bottom: 300)),
+          ]),
         ));
   }
 
@@ -193,9 +197,13 @@ class _ReportsState extends State<Reports> {
           }
 
           return Container(
-              height: MediaQuery.of(context).size.height + 200,
+              height: MediaQuery.of(context).size.height,
               child: Padding(
-                  padding: const EdgeInsets.only(left: 0, right: 0),
+                  padding: const EdgeInsets.only(
+                    left: 0,
+                    // bottom: 100,
+                    right: 0,
+                  ),
                   child: new ListView(
                       physics: BouncingScrollPhysics(),
                       children: snapshot.data.docs
