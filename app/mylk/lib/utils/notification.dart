@@ -7,15 +7,19 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 Future<bool> SendNotification(String title, String body) async {
+  // var keys =
+  //     await FirebaseFirestore.instance.collection('global').doc('admin').get();
+  // List<String> userToken = [keys['fcm'].toString()];
+
   var keys =
       await FirebaseFirestore.instance.collection('global').doc('admin').get();
-  List<String> userToken = [keys['fcm'].toString()];
+  List<dynamic> fcms = keys['fcms'];
 
-  print('ADMIN FCM IS !!! : ' + keys.data()['key'].toString());
+  print('ADMIN FCMS ARE : !!! : ' + keys.data()['fcms'].toString());
 
   String postUrl = "https://fcm.googleapis.com/fcm/send";
   final data = {
-    "registration_ids": userToken,
+    "registration_ids": fcms,
     "collapse_key": "type_a",
     "notification": {
       "title": title,

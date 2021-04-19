@@ -40,9 +40,9 @@ class _FcmState extends State<Fcm> {
   // }
 
   Future<dynamic> _initLocalNotifications() async {
-    print('here');
+    print('herebc');
     final AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher_notification');
+        AndroidInitializationSettings('@mipmap/launcher_icon');
     final IOSInitializationSettings initializationSettingsIOS =
         IOSInitializationSettings();
     final InitializationSettings initializationSettings =

@@ -10,6 +10,8 @@ class Item {
   int quantity;
   // String createdAt;
   String imageUrl;
+  bool outOfStock = false;
+
   // bool outOfStock;
   DocumentReference reference;
 
@@ -18,7 +20,8 @@ class Item {
       this.imageUrl,
       this.reference,
       this.description,
-      this.quantity});
+      this.quantity,
+      this.outOfStock});
 
   factory Item.fromJson(Map<dynamic, dynamic> json) => ItemFromJson(json);
 
@@ -45,6 +48,7 @@ Item ItemFromJson(Map<dynamic, dynamic> json) {
       price: json['price'] == null ? null : json['price'],
       imageUrl: json['imageUrl'] == null ? null : json['imageUrl'],
       quantity: json['quantity'] == null ? null : json['quantity'],
+      outOfStock: json['outOfStock'] == null ? false : json['outOfStock'],
       description: json['description'] == null ? null : json['description']);
 }
 
@@ -54,7 +58,8 @@ Map<String, dynamic> ItemToJson(Item item) {
     'description': item.description,
     'price': item.price,
     'imageUrl': item.imageUrl,
-    'quantity': item.quantity
+    'quantity': item.quantity,
+    'outOfStock': item.outOfStock,
   };
 }
 

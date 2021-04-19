@@ -275,18 +275,22 @@ class _AdminHomeState extends State<AdminHome> {
     print('succdess ' + fcmToken);
     var tokens = FirebaseFirestore.instance.collection('global').doc('admin');
 
-    await tokens.set({
-      'fcm': fcmToken,
-    }, SetOptions(merge: true));
+    // await tokens.set({
+    //   'fcm': fcmToken,
+    // }, SetOptions(merge: true));
     // Save it to Firestore
     if (fcmToken != null) {
       print('FCM WAS NULL');
 
       var tokens = FirebaseFirestore.instance.collection('global').doc('admin');
 
-      await tokens.set({
-        'fcm': fcmToken,
-      }, SetOptions(merge: true));
+      // await tokens.set({
+      //   'fcm': fcmToken,
+      // }, SetOptions(merge: true));
+
+      await tokens.update({
+        "fcms": FieldValue.arrayUnion([fcmToken])
+      });
     }
   }
 }

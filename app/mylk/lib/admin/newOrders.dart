@@ -208,7 +208,20 @@ class _NewOrdersState extends State<NewOrders> {
                         ],
                         rows: List.generate(doc['items'].length,
                             (index) => _getDataRow(doc['items'][index])),
-                      )
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: FlatButton(
+                          onPressed: () {
+                            FirebaseFirestore.instance
+                                .collection('orders')
+                                .doc(doc.id)
+                                .delete();
+                          },
+                          child: Text("Delete",
+                              style: TextStyle(color: Colors.red)),
+                        ),
+                      ),
                     ],
                   ),
                 ),

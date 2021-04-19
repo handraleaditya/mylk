@@ -42,10 +42,66 @@ class _AboutState extends State<About> {
               )),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 28.0, bottom: 100),
+              padding: const EdgeInsets.only(top: 28.0),
               child: Image(
                   image: AssetImage(
                 'assets/images/gotha2.jpeg',
+              )),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 28.0),
+              child: Image(
+                  image: AssetImage(
+                'assets/images/cow_4.jpeg',
+              )),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 28.0, bottom: 30),
+              child: Image(
+                  image: AssetImage(
+                'assets/images/cow_5.jpeg',
+              )),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 38.0),
+              child: Image(
+                  image: AssetImage(
+                'assets/images/promo3.jpeg',
+              )),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 38.0),
+              child: Image(
+                  image: AssetImage(
+                'assets/images/promo2.jpeg',
+              )),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 38.0),
+              child: Image(
+                  image: AssetImage(
+                'assets/images/promo1.jpeg',
+              )),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 38.0),
+              child: Image(
+                  image: AssetImage(
+                'assets/images/promo4.jpeg',
+              )),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 38.0),
+              child: Image(
+                  image: AssetImage(
+                'assets/images/promo5.jpeg',
+              )),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 38.0, bottom: 100),
+              child: Image(
+                  image: AssetImage(
+                'assets/images/promo6.jpeg',
               )),
             ),
           ],

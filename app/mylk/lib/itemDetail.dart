@@ -139,37 +139,50 @@ class _ItemDetailState extends State<ItemDetail> {
           ),
         ),
         Padding(
-          padding:
-              const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 30),
-          child: SizedBox(
-            width: double.infinity,
-            child: RaisedButton(
-              padding:
-                  EdgeInsets.only(top: 15, bottom: 15, left: 30, right: 30),
-              textColor: Colors.white,
-              color: Colors.grey[900],
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  getButtonText(),
-                  Icon(Icons.add_shopping_cart_rounded),
-                ],
-              ),
-              onPressed: () async {
-                addToCart(widget.item);
-                // Get.to(() => Otp());
-                // Get.to(() => Home());
-
-                // await verifyPhone('+91' + phoneController.text);
-              },
-              shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(25.0),
-              ),
-            ),
-          ),
-        ),
+            padding:
+                const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 30),
+            child: getButton()),
       ]),
     );
+  }
+
+  Widget getButton() {
+    if (widget.item.outOfStock) {
+      return Container(
+        padding: EdgeInsets.only(top: 0),
+        child: FlatButton(
+          onPressed: () {},
+          child: Text("Out of stock",
+              style: TextStyle(color: Colors.red, fontSize: 20)),
+        ),
+      );
+    } else {
+      return SizedBox(
+        width: double.infinity,
+        child: RaisedButton(
+          padding: EdgeInsets.only(top: 15, bottom: 15, left: 30, right: 30),
+          textColor: Colors.white,
+          color: Colors.grey[900],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              getButtonText(),
+              Icon(Icons.add_shopping_cart_rounded),
+            ],
+          ),
+          onPressed: () async {
+            addToCart(widget.item);
+            // Get.to(() => Otp());
+            // Get.to(() => Home());
+
+            // await verifyPhone('+91' + phoneController.text);
+          },
+          shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(25.0),
+          ),
+        ),
+      );
+    }
   }
 
   Text getButtonText() {
@@ -181,43 +194,47 @@ class _ItemDetailState extends State<ItemDetail> {
   }
 
   Widget _incrementButton() {
-    return Container(
-      child: Row(
-        children: [
-          Container(
-            height: 40,
-            child: FloatingActionButton(
-              heroTag: "decreaseQuantity",
-              child: Icon(Icons.remove, color: Colors.black87),
-              backgroundColor: Colors.white,
-              onPressed: () {
-                decrementQuantity();
-              },
-            ),
-          ),
-          Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey[300]),
-                borderRadius: BorderRadius.circular(5),
+    if (widget.item.outOfStock) {
+      return Container();
+    } else {
+      return Container(
+        child: Row(
+          children: [
+            Container(
+              height: 40,
+              child: FloatingActionButton(
+                heroTag: "decreaseQuantity",
+                child: Icon(Icons.remove, color: Colors.black87),
+                backgroundColor: Colors.white,
+                onPressed: () {
+                  decrementQuantity();
+                },
               ),
-              child: Text(quantity.toString() ?? '1')),
-          Container(
-            height: 40,
-            child: FloatingActionButton(
-              heroTag: "increaseQuantity",
-              child: Icon(Icons.add, color: Colors.black87),
-              backgroundColor: Colors.white,
-              onPressed: () {
-                // setState(() {
-                incrementQuantity();
-                // });
-              },
             ),
-          ),
-        ],
-      ),
-    );
+            Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey[300]),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Text(quantity.toString() ?? '1')),
+            Container(
+              height: 40,
+              child: FloatingActionButton(
+                heroTag: "increaseQuantity",
+                child: Icon(Icons.add, color: Colors.black87),
+                backgroundColor: Colors.white,
+                onPressed: () {
+                  // setState(() {
+                  incrementQuantity();
+                  // });
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   void incrementQuantity() {
