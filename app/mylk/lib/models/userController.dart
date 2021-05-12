@@ -12,6 +12,8 @@ class UserController {
 
   Future<dynamic> addUserData({Map<String, dynamic> data}) async {
     data['updatedAt'] ??= DateTime.now();
+    // data['createdAt'] ??= DateTime.now();
+
     try {
       return await userCollection.doc(uid).set(data, SetOptions(merge: true));
     } catch (e) {
@@ -28,7 +30,7 @@ class UserController {
       'address2': user.address2,
       'mobile': user.mobile,
       'updatedAt': user.updatedAt,
-      'createdAT': user.createdAt
+      'createdAt': user.createdAt
     });
   }
 

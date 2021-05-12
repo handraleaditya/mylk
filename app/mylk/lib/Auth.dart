@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,6 +43,7 @@ class AuthController {
       BuildContext context, AuthCredential authCreds, Function error) async {
     try {
       await FirebaseAuth.instance.signInWithCredential(authCreds);
+      await saveFcm();
 
       Get.to(() => Home());
     } catch (e) {
@@ -49,5 +52,16 @@ class AuthController {
       debugPrint(e.toString());
       return Future.error('Incorrect OTP Entered');
     }
+  }
+
+  void saveFcm() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+    String uid = _auth.currentUser.uid;
+
+    var profile = FirebaseFirestore.instance.collection('users').doc(uid);
+    var fcmToken = await _fcm.getToken();
+
+    await profile.update({"fcm": fcmToken});
   }
 }

@@ -7,6 +7,7 @@ import 'package:mylk/cart.dart';
 import 'package:mylk/models/dataRepository.dart';
 import 'package:mylk/models/itemModel.dart';
 import 'package:intl/intl.dart';
+import 'package:mylk/utils/notification.dart';
 
 class NewOrders extends StatefulWidget {
   final String category;
@@ -159,6 +160,33 @@ class _NewOrdersState extends State<NewOrders> {
                           )
                         ]),
                       ),
+                      if (doc.data().containsKey('mobile2'))
+                        doc['mobile2'] != ''
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 20, top: 10),
+                                child: Row(children: [
+                                  Icon(FontAwesome.whatsapp, size: 14),
+                                  Expanded(
+                                    child: Column(
+                                      // mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
+                                          child: Text(
+                                            doc['mobile2'],
+                                            overflow: TextOverflow.visible,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ]),
+                              )
+                            : Container(),
                       doc['note'] != ''
                           ? Padding(
                               padding: const EdgeInsets.only(left: 20, top: 10),
@@ -361,6 +389,13 @@ class _NewOrdersState extends State<NewOrders> {
                 )
               ]),
               onPressed: () async {
+                //send notification
+                userNotification(
+                    title: "Order completed!",
+                    body: 'Your latest order was completed.',
+                    fcm: doc['fcm']);
+
+                //update database
                 await FirebaseFirestore.instance
                     .collection("orders")
                     .doc(doc.id)
@@ -379,6 +414,12 @@ class _NewOrdersState extends State<NewOrders> {
                 )
               ]),
               onPressed: () async {
+                //send notification
+                userNotification(
+                    title: "Order cancelled!",
+                    body: 'Your latest order was cancelled by the dairy.',
+                    fcm: doc['fcm']);
+
                 await FirebaseFirestore.instance
                     .collection("orders")
                     .doc(doc.id)
@@ -397,6 +438,11 @@ class _NewOrdersState extends State<NewOrders> {
                 )
               ]),
               onPressed: () async {
+                //send notification
+                userNotification(
+                    title: "Order accepted!",
+                    body: 'Your latest order was accepted by the dairy.',
+                    fcm: doc['fcm']);
                 await FirebaseFirestore.instance
                     .collection("orders")
                     .doc(doc.id)
@@ -427,6 +473,11 @@ class _NewOrdersState extends State<NewOrders> {
                 )
               ]),
               onPressed: () async {
+                //send notification
+                userNotification(
+                    title: "Order completed!",
+                    body: 'Your latest order was completed by the dairy.',
+                    fcm: doc['fcm']);
                 await FirebaseFirestore.instance
                     .collection("orders")
                     .doc(doc.id)
@@ -445,6 +496,11 @@ class _NewOrdersState extends State<NewOrders> {
                 )
               ]),
               onPressed: () async {
+                //send notification
+                userNotification(
+                    title: "Order cancelled!",
+                    body: 'Your latest order was cancelled by the dairy.',
+                    fcm: doc['fcm']);
                 await FirebaseFirestore.instance
                     .collection("orders")
                     .doc(doc.id)

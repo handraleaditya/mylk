@@ -145,7 +145,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('About',
+                      Text('About us',
                           style: TextStyle(
                             fontFamily: 'Varela',
                             fontSize: 18.0,
@@ -286,6 +286,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             backgroundColor: Colors.black,
             child: Icon(Icons.shopping_cart),
           ),
+          
           // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         ));
   }

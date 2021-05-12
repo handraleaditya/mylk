@@ -79,6 +79,11 @@ class _PaymentMethodWidgetState extends State<PaymentMethodWidget> {
     return Column(
       children: <Widget>[
         SizedBox(height: 20),
+        Text(
+          'Note : Store timings are 8 AM to 7 PM',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 20),
         RadioListTile<SingingCharacter>(
           title: const Text('Cash on delivery'),
           value: SingingCharacter.Cash_on_delivery,
@@ -135,7 +140,7 @@ class _PaymentMethodWidgetState extends State<PaymentMethodWidget> {
             "Rs." +
                 order.total.toInt().toString() +
                 " order placed, please check inside the app.");
-        cart.deleteAllCart();   
+        cart.deleteAllCart();
         Get.to(() => MyOrders());
       },
       shape: new RoundedRectangleBorder(

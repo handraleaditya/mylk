@@ -132,6 +132,25 @@ class _AllUsersState extends State<AllUsers> {
                                 ),
                               )
                             ]),
+                            Row(children: [
+                              Icon(FontAwesome.whatsapp, size: 14),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 6.0, bottom: 10, top: 5),
+                                      child: Text(
+                                        doc.data()['mobile2'] ??
+                                            "No alternate phone",
+                                        overflow: TextOverflow.visible,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ]),
                           ],
                         ),
                       )
@@ -175,15 +194,18 @@ class _AllUsersState extends State<AllUsers> {
             ));
           }
 
-          return Container(
-              height: MediaQuery.of(context).size.height + 500,
-              child: Padding(
-                  padding: const EdgeInsets.only(left: 0, right: 0),
-                  child: new ListView(
-                      physics: BouncingScrollPhysics(),
-                      children: snapshot.data.docs
-                          .map((data) => buildListItem(context, data))
-                          .toList())));
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 28.0),
+            child: Container(
+                // padding: EdgeInsets.only(right: 10, left: 10),
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: ListView(
+                    // physics: BouncingScrollPhysics(),
+                    children: snapshot.data.docs
+                        .map((data) => buildListItem(context, data))
+                        .toList())),
+          );
 
 //working
           return Container(
@@ -191,9 +213,9 @@ class _AllUsersState extends State<AllUsers> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               child: Container(
-                // height: 200,
+                height: 100,
                 child: GridView.count(
-                  childAspectRatio: 1,
+                  childAspectRatio: 2.1,
                   crossAxisCount: 1,
                   // primary: false,
                   // crossAxisSpacing: 10.0,

@@ -1,0 +1,140 @@
+@font-face {
+  font-family: ffont;
+  src: url(assets/fonts/free_pixel.woff);
+}
+
+
+
+canvas{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+  z-index: 1;
+  position: fixed;
+
+
+}
+
+body  {
+  /*background-color : black;*/
+  margin:0;
+  padding: 0px;
+  font-family: ffont;
+  /*background-image: url("assets/bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;*/
+
+
+}
+
+.container{
+  font-family: ffont;
+  overflow-wrap: break-word;
+  position:relative;
+  margin-top: 70px;
+  margin-bottom: 70px;
+  margin-left: 170px;
+  margin-right: 170px;
+  z-index: 2;
+  border : 2px solid;
+  border-bottom-color:#535353;
+  border-right-color:#535353;
+  border-left-color:#dbdbdb;
+  border-top-color:#dbdbdb;
+  background-color :#bfbfbf;
+  /*max-width:1280px;*/
+  font-size: 18px;
+  padding:2px;
+
+
+  ul.toolbar{
+      list-style:none;
+      padding:2px 0;
+      margin:2px;
+      li{
+        display : inline-block;
+        padding : 0 5px;
+      }
+    }
+
+   .container_body{
+     border : 2px solid;
+     border: 2px solid;
+    border-bottom-color: #c7c7c7;
+    border-right-color: #c7c7c7;
+    border-left-color: #808080;
+    border-top-color: #808080;
+    background-color: #fff;
+    padding: 10px;
+    padding-top: 40px;
+    font-size: 23px;
+    padding-left: 20px;
+    padding-right: 20px;
+   }
+
+   .footer{
+     .footer_left,.footer_right{
+       border:1px solid;
+       border-color:#888 #dadada #dadada #888;
+       display:inline-block;
+       padding:0 10px;
+       font-size: 15px;
+     }
+     .footer_left{width:30%;}
+     .footer_right{width:70%;}
+     }
+
+
+
+     .title{
+       background-color:#29007d;
+       padding:2px 15px 5px 4px ;
+       overflow-wrap: break-word;
+       position: relative;
+
+
+
+         color:#bcbcbc;
+         font-size:21px;
+
+
+       button{
+         border:2px solid;
+         border-bottom-color:#444;
+         border-right-color:#444;
+         border-left-color:#a6a6a6;
+         border-top-color:#a6a6a6;
+         background-color:#bfbfbf;
+         position:absolute;
+         font-size:10px;
+         line-height:0;
+         height:20px;
+         padding:1px;
+         width:20px;
+         top:4px;
+       }
+
+       button.minimize{
+         right:52px;
+
+       }
+       button.maximize{
+         right :28px;
+
+       }
+       button.close{
+         right :5px;
+       }
+     }
+
+
+
+   }

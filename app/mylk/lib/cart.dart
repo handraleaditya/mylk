@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:get/get.dart';
@@ -279,12 +280,16 @@ class _CartState extends State<Cart> {
       onPressed: () async {
         // placeOrder();
         User user = await FirebaseAuth.instance.currentUser;
+        final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+        var fcmToken = await _fcm.getToken();
+
         Order order = Order(
           await getCartItems(),
           cart.getTotalAmount(),
           "placed",
           item.reference,
           user.uid,
+          fcmToken,
         );
         Get.to(() => EnterDetails(order: order));
       },

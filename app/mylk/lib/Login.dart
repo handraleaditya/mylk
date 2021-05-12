@@ -59,6 +59,12 @@ class _LoginState extends State<Login> {
                           fontWeight: FontWeight.w900,
                           fontSize: 15)),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 12.0, left: 0),
+                  child: Text(
+                      "Note : Please enter you whatsapp number for getting bill",
+                      style: TextStyle(fontSize: 13, color: Colors.grey[500])),
+                ),
                 SizedBox(
                   height: 15,
                 ),

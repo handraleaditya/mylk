@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+// import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class About extends StatefulWidget {
   @override
@@ -6,6 +8,17 @@ class About extends StatefulWidget {
 }
 
 class _AboutState extends State<About> {
+  // YoutubePlayerController _controller = YoutubePlayerController(
+  //   initialVideoId: 'iLnmTe5Q2Qw',
+
+  // );
+  //
+  YoutubePlayerController _controller = YoutubePlayerController(
+    initialVideoId: 'HFxz9WN8lI4',
+    params: YoutubePlayerParams(
+        showControls: true, showFullscreenButton: true, autoPlay: true),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,13 +29,46 @@ class _AboutState extends State<About> {
           elevation: 0,
           centerTitle: true,
           title: Text(
-            "About",
+            "About us",
             style: TextStyle(color: Colors.grey[800]),
           )),
       body: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
         child: ListView(
           children: [
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: YoutubePlayerBuilder(
+            //     player: YoutubePlayer(
+            //       controller: _controller,
+            //     ),
+            //     builder: (context, player) {
+            //       return Column(
+            //         children: [
+            //           // some widgets
+            //           player,
+            //           //some other widgets
+            //         ],
+            //       );
+            //     },
+            //   ),
+            // ),
+            // YoutubePlayer(
+            //   controller: _controller,
+            //   showVideoProgressIndicator: true,
+            // ),
+            //
+            //
+            //
+
+            Padding(
+              padding: const EdgeInsets.only(top: 15, bottom: 40.0),
+              child: YoutubePlayerIFrame(
+                controller: _controller,
+                aspectRatio: 16 / 9,
+              ),
+            ),
+
             Image(
                 image: AssetImage(
               'assets/images/cow_3.jpeg',

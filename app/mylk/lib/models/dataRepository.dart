@@ -65,7 +65,7 @@ class DataRepository {
   Stream<QuerySnapshot> getAllUsersStream() {
     CollectionReference newCollection =
         FirebaseFirestore.instance.collection('users');
-    return newCollection.snapshots();
+    return newCollection.orderBy('updatedAt', descending: true).snapshots();
   }
 
   Stream<QuerySnapshot> getReportsStream() {

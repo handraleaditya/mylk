@@ -18,15 +18,25 @@ class Order {
   String address2 = "";
   String note = "";
   String phone = "";
+  String mobile2 = "";
+  String fcm;
 
   DocumentReference reference;
 
-  Order(this.items, this.total, this.status, this.reference, this.uid,
-      {this.name = "",
-      this.address = "",
-      this.address2 = "",
-      this.note = "",
-      this.phone = ""});
+  Order(
+    this.items,
+    this.total,
+    this.status,
+    this.reference,
+    this.uid,
+    this.fcm, {
+    this.name = "",
+    this.address = "",
+    this.address2 = "",
+    this.note = "",
+    this.mobile2 = "",
+    this.phone = "",
+  });
 
   factory Order.fromJson(Map<dynamic, dynamic> json) => orderFromJson(json);
 
@@ -57,18 +67,27 @@ class Order {
       'address': address,
       'address2': address2,
       'note': note,
-      'phone': phone
+      'phone': phone,
+      'mobile2': mobile2,
+      'fcm': fcm,
     };
   }
 
   factory Order.fromMap(Map<String, dynamic> map) {
-    return Order(List<Item>.from(map['items']?.map((x) => Item.fromJson(x))),
-        map['total'], map['createdAt'], map['status'], map['uid'],
-        name: map['name'],
-        address: map['address'],
-        address2: map['address2'],
-        note: map['note'],
-        phone: map['phone']);
+    return Order(
+      List<Item>.from(map['items']?.map((x) => Item.fromJson(x))),
+      map['total'],
+      map['createdAt'],
+      map['status'],
+      map['uid'],
+      map['fcm'],
+      name: map['name'],
+      address: map['address'],
+      address2: map['address2'],
+      note: map['note'],
+      mobile2: map['mobile2'],
+      phone: map['phone'],
+    );
   }
 
   @override
@@ -88,6 +107,8 @@ class Order {
         other.address2 == address2 &&
         other.note == note &&
         other.phone == phone &&
+        other.mobile2 == mobile2 &&
+        other.fcm == fcm &&
         other.createdAt == createdAt;
   }
 
@@ -108,11 +129,13 @@ Order orderFromJson(Map<dynamic, dynamic> json) {
     json['createdAt'] == null ? null : json['createdAt'],
     json['status'] == null ? null : json['status'],
     json['uid'] == null ? null : json['uid'],
+    json['fcm'] == null ? null : json['fcm'],
     name: json['name'] == null ? null : json['name'],
     address: json['address'] == null ? null : json['address'],
     address2: json['address2'] == null ? null : json['address2'],
     note: json['note'] == null ? null : json['note'],
     phone: json['phone'] == null ? null : json['phone'],
+    mobile2: json['mobile2'] == null ? null : json['mobile2'],
   );
 }
 
@@ -132,7 +155,9 @@ Map<String, dynamic> orderToJson(Order order) {
     'address': order.address,
     'address2': order.address2,
     'note': order.note,
-    'phone': order.phone
+    'phone': order.phone,
+    'mobile2': order.mobile2,
+    'fcm': order.fcm,
   };
 }
 

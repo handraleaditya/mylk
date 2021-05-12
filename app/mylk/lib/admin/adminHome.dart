@@ -25,6 +25,7 @@ class _AdminHomeState extends State<AdminHome> {
   Widget build(BuildContext context) {
     _saveDeviceToken();
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
           iconTheme: IconThemeData(color: Color(0xFF545D68)),
           backgroundColor: Colors.white,

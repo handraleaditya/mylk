@@ -26,7 +26,7 @@ class _EnterDetailsState extends State<EnterDetails> {
   final _formKey = GlobalKey<FormState>();
   User user = FirebaseAuth.instance.currentUser;
 
-  String name, address, address2, note;
+  String name, address, address2, note, mobile2;
 
   @override
   void initState() {
@@ -38,11 +38,14 @@ class _EnterDetailsState extends State<EnterDetails> {
   TextEditingController addressController = TextEditingController();
   TextEditingController address2Controller = TextEditingController();
   TextEditingController noteController = TextEditingController();
+  TextEditingController mobile2Controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     nameController.text = name;
     addressController.text = address;
+    mobile2Controller.text = mobile2;
+
     address2Controller.text = address2;
 
     return Scaffold(
@@ -152,6 +155,39 @@ class _EnterDetailsState extends State<EnterDetails> {
                     SizedBox(
                       height: 20,
                     ),
+
+                    TextField(
+                      maxLines: 1,
+                      autofocus: true,
+                      inputFormatters: [
+                        // FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                      ],
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(20),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.grey[100]),
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[100],
+                          hintText: "Whatsapp no. (optional)",
+                          prefixIcon: IconTheme(
+                            child: Icon(FontAwesome.whatsapp),
+                            data: IconThemeData(color: Colors.grey[800]),
+                          )),
+                      controller: mobile2Controller,
+                      onTap: () {},
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                          "Note : Please enter you whatsapp number for getting bill",
+                          style:
+                              TextStyle(fontSize: 13, color: Colors.grey[500])),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     TextField(
                       maxLines: 1,
                       autofocus: true,
@@ -223,6 +259,7 @@ class _EnterDetailsState extends State<EnterDetails> {
       name = profile.data()['name'];
       address = profile.data()['address'];
       address2 = profile.data()['address2'];
+      mobile2 = profile.data()['mobile2'];
     });
   }
 
@@ -232,6 +269,7 @@ class _EnterDetailsState extends State<EnterDetails> {
       'name': nameController.text,
       'address': addressController.text,
       'address2': address2Controller.text,
+      'mobile2': mobile2Controller.text,
     };
     userController.addUserData(data: data);
   }
@@ -240,6 +278,10 @@ class _EnterDetailsState extends State<EnterDetails> {
     order.address = addressController.text;
     order.address2 = address2Controller.text;
     order.name = nameController.text;
+    order.note = noteController.text;
+
+    order.mobile2 = mobile2Controller.text;
+
     order.phone = await getPhone();
 
     return order;
