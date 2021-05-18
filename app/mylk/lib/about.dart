@@ -76,7 +76,7 @@ class _AboutState extends State<About> {
             Padding(
               padding: const EdgeInsets.only(top: 30.0),
               child: Text(
-                "We provide 100% pure milk products without adding any preservatives or other mixing ingredients,we ensure each our product go through hygiene packaging and safety.",
+                "We provide 100% pure milk products without adding any preservatives or other mixing ingredients,we ensure each our product go through hygiene packaging and safety. Please contact +917666479776 to get in touch.",
                 style: TextStyle(color: Colors.grey[900], fontSize: 18),
               ),
             ),

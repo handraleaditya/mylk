@@ -441,8 +441,10 @@ class _NewOrdersState extends State<NewOrders> {
                 //send notification
                 userNotification(
                     title: "Order accepted!",
-                    body: 'Your latest order was accepted by the dairy.',
+                    body: 'Your latest order will be delivered shortly.',
                     fcm: doc['fcm']);
+                debugPrint(
+                    'Notification sent successfully, oh yeah ${doc['fcm']}');
                 await FirebaseFirestore.instance
                     .collection("orders")
                     .doc(doc.id)
